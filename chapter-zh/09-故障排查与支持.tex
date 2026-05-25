@@ -1,0 +1,87 @@
+
+
+
+\chapter{故障排查与支持}
+\label{ch:troubleshooting}
+
+\section{\TL 网站}\label{sec:website}
+\TL 项目的网站位于
+\url{http://code.google.com/p/tufte-latex/}。在该网站上，你可以找到代码仓库、邮件列表、缺陷追踪器以及相关文档的链接。
+
+\section{\TL 邮件列表}\label{sec:mailing-lists}
+\TL 项目共有两个邮件列表：
+
+\paragraph{讨论列表}
+\texttt{tufte-latex} 讨论列表用于提问、寻求问题排查帮助，以及获取技术支持。版本发布公告也会发布在这个列表中。你可以通过以下地址订阅：\url{http://groups.google.com/group/tufte-latex}。
+
+\paragraph{提交列表}
+\texttt{tufte-latex-commits} 是一个只读列表。每当 \TL 代码被更新时，系统都会向该列表发送一封通知邮件。如果你希望及时了解代码的最新进展，可以订阅这个列表。订阅地址为：\url{http://groups.google.com/group/tufte-latex-commits}。
+
+\section{获取帮助}\label{sec:getting-help}
+如果你在使用某个 \TL 文档类时遇到问题，或者希望报告 bug、提出疑问，请向邮件列表发送邮件，或者访问项目网站。
+
+为了帮助我们更快定位问题，请尽量使用 \docclsopt{debug} 类选项重新编译文档，并把生成的 \texttt{.log} 文件以及问题的简短描述一起发送到邮件列表。
+
+
+
+\section{错误、警告与信息消息}\label{sec:tl-messages}
+下面列出了 \TL 类生成的所有错误、警告和信息消息，并对其含义做了简要说明。
+\index{error messages}\index{warning messages}\index{debug messages}
+
+% Errors
+\docmsg{错误：\doccmd{subparagraph} 在此文档类中未定义。}{%
+\doccmd{subparagraph} 命令并未在 \TL 文档类中定义。如果你希望使用 \doccmd{subparagraph}，则需要自行重新定义它。有关 \TL 文档类中可用标题样式的说明，请参见第~\pageref{sec:headings} 页 “Headings” 一节。}
+
+\docmsg{错误：\doccmd{subsubsection} 在此文档类中未定义。}{%
+\doccmd{subsubsection} 命令并未在 \TL 文档类中定义。如果你希望使用 \doccmd{subsubsection}，则需要自行重新定义它。有关 \TL 文档类中可用标题样式的说明，请参见第~\pageref{sec:headings} 页 “Headings” 一节。}
+
+\docmsg{错误：\doccmd{morefloats} 最多只能调用两次。请参见\par\noindent\ \ \ \ \ \ \ Tufte-LaTeX 文档中的其他解决办法。}{%
+\LaTeX{} 初始会分配 18 个槽位存储浮动体。第一次调用 \doccmd{morefloats} 会额外分配 34 个槽位；第二次调用则再额外分配 26 个槽位。
+
+\doccmd{morefloats} 最多只能调用两次。第三次调用时就会触发此错误消息。更多信息请参见第~\pageref{err:too-many-floats} 页。}
+
+% Warnings
+\docmsg{警告：选项 `\docopt{class option}' 不受支持，将被忽略。}{%
+当你尝试在 \TL 文档类中使用不受支持的 \docopt{class option} 时，就会出现该警告。在这种情况下，该选项会被忽略。}
+
+% Info / Debug messages
+\docmsg{信息：`\docclsopt{symmetric}' 选项隐含启用 `\docclsopt{twoside}'。}{%
+你指定了 \docclsopt{symmetric} 文档类选项。这个选项会自动同时启用 \docclsopt{twoside}。关于其详细说明，请参见第~\pageref{clsopt:symmetric} 页。}
+
+
+\section{宏包依赖}\label{sec:dependencies}
+下表列出了 \TL 文档类依赖的宏包。带星号者为可选依赖。
+\begin{multicols}{2}
+\begin{itemize}
+  \item xifthen
+  \item ifpdf*
+  \item ifxetex*
+  \item hyperref
+  \item geometry
+  \item ragged2e
+  \item chngpage \emph{or} changepage
+  \item paralist
+  \item textcase
+  \item soul*
+  \item letterspace*
+  \item setspace
+  \item natbib \emph{and} bibentry
+  \item optparams
+  \item placeins
+  \item mathpazo*
+  \item helvet*
+  \item fontenc
+  \item beramono*
+  \item fancyhdr
+  \item xcolor
+  \item textcomp
+  \item titlesec
+  \item titletoc
+\end{itemize}
+\end{multicols}
+
+
+
+
+%%
+% The back matter contains appendices, bibliographies, indices, glossaries, etc.

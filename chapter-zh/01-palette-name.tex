@@ -1,0 +1,20 @@
+
+% 当前配色展示页（不编号、不计入目录）。
+% 六条 1cm 高的 pal1..pal6 色带，中间间隔 1.6cm。
+% 约定（与配色无关）：pal1..pal3 采用黑色字，pal4..pal6 采用白色字。
+% 该配色的色彩哲学以 \marginnote 的形式放入边栏。
+\cleardoublepage
+\thispagestyle{empty}
+\chapter*{\OUCPaletteName}
+\marginnote{这是模板出厂时的底色。蓝是青年学者的颜色——从清晨第一页讲义、午后图书馆窗台，到深夜实验台的冷光，蓝构成学术工作的整个色温。六层由浅入深的蓝刻意维持理性的克制，模拟一本书从翻开到合上的全过程；它不是一组要被注视的色，而是一组让文字自身被看见的色。}
+\noindent\colorbox{oucpal1}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{black}纸海蓝\,Paper Foam\quad\textnormal{\texttt{rgb(239, 246, 255)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal2}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{black}冰晶蓝\,Desert Foam\quad\textnormal{\texttt{rgb(219, 234, 254)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal3}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{black}天玻璃蓝\,Sea Smoke\quad\textnormal{\texttt{rgb(96, 165, 250)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal4}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{white}讲堂蓝\,Crisp Sky\quad\textnormal{\texttt{rgb(37, 99, 235)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal5}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{white}深思蓝\,Twilight Blue\quad\textnormal{\texttt{rgb(30, 58, 138)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal6}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{white}铅墨石\,Midnight Hull\quad\textnormal{\texttt{rgb(30, 41, 59)}}}}\par

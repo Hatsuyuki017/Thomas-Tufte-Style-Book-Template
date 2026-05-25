@@ -1,0 +1,270 @@
+
+
+\chapter[关于 tufte-book 文档类的使用]{关于 \texttt{tufte-book} 文档类的使用}
+\label{ch:tufte-book}
+
+\TL 文档类定义了一种与 Edward Tufte 在其书籍和讲义中所使用风格相近的排版样式。这种风格以大量使用边注、图文紧密结合以及讲究的字体排版而著称。本文档既是 \TL 文档类功能的展示，也是其使用方式的风格指南。
+
+\section{页面布局}\label{sec:page-layout}
+\subsection{标题}\label{sec:headings}\index{headings}
+这种风格提供 \textsc{a}- 和 \textsc{b}-heads，也就是上文示范过的 \Verb|\section| 和 \Verb|\subsection|。
+
+如果你需要超过两个层级的节标题，目前需要自己定义更低层级的样式；因为在默认设置中，低于 \Verb|\subsection| 的标题样式并未预先定义。正如 Bringhurst 在 \textit{The Elements of Typographic Style} 一书中指出的那样，\cite{Bringhurst2005} 你应当“使用你所需要的标题层级，不多也不少”。
+
+如果尝试使用 \Verb|\subsubsection| 或更低层级标题，\TL 类会报错。
+
+% let's start a new thought -- a new section
+\newthought{在他后期的书中}，\cite{Tufte2006} Tufte 在每个 section 的开头加入一点竖直空白，取消首段缩进，并将句子的前几个词设置为 \textsc{small caps}。若要在本样式中实现这种效果，请使用 \doccmddef{newthought} 命令：
+\begin{docspec}
+  \doccmd{newthought}\{在他后期的书中\}, Tufte starts\ldots
+\end{docspec}
+
+
+\section{边注}\label{sec:sidenotes}
+这种风格最显著、最具辨识度的特征之一就是对边注的大量使用。页面预留了较宽的边栏，以容纳边注和小型插图。任何 \doccmd{footnote} 都会自动转换成边注。\footnote{这是通过 \texttt{\textbackslash footnote} 命令输入的一个边注。} 如果你想在边栏中放置信息，但不需要边注标记，也就是正文中的上标数字，可以使用 \doccmd{marginnote} 命令。\marginnote{这是一个边栏注。注意它前面没有编号，正文中对应位置也没有编号提示。}
+
+\doccmddef{sidenote} 命令的规范如下：
+\begin{docspec}
+  \doccmd{sidenote}[\docopt{number}][\docopt{offset}]\{\docarg{Sidenote text.}\}
+\end{docspec}
+
+\docopt{number} 和 \docopt{offset} 两个参数都是可选的。如果提供了 \docopt{number}，该数字会被用作当前边注的编号，但只会影响当前这一条边注，不会改变后续边注的编号序列。
+
+有时边注可能会压到边栏中的其他文字或图形。这种情况下，你可以通过 \docopt{offset} 参数提供一个长度值，来调整边注的垂直位置。有效的长度值例如：
+\begin{docspec}
+  \ttfamily 1.0in \qquad 2.54cm \qquad 254mm \qquad 6\Verb|\baselineskip|
+\end{docspec}
+如果该值为正，则边注会向下移动；如果为负，则边注会上移。
+
+虽然 \docopt{number} 和 \docopt{offset} 都是可选参数，但必须按顺序提供。如果你只想调整边注的垂直位置而保持默认编号，可以写成：
+\begin{docspec}
+  \doccmd{sidenote}[][\docopt{offset}]\{\docarg{Sidenote text.}\}
+\end{docspec}
+空的第一组方括号告诉 \Verb|\sidenote| 命令继续使用默认边注编号。
+
+如果你 \emph{只} 想改变边注编号，则可以完全省略 \docopt{offset}：
+\begin{docspec}
+  \doccmd{sidenote}[\docopt{number}]\{\docarg{Sidenote text.}\}
+\end{docspec}
+
+\doccmddef{marginnote} 命令也接受一个类似的 \docarg{offset} 参数：
+\begin{docspec}
+  \doccmd{marginnote}[\docopt{offset}]\{\docarg{Margin note text.}\}
+\end{docspec}
+
+\section{参考文献}
+参考文献也会与其引用并排放入边注中。这可以通过普通的 \doccmddef{cite} 命令实现。\sidenote{本文第一段中已经包含了一个引用示例。}
+
+完整参考文献列表也可以通过 \doccmddef{bibliography} 命令自动打印。（本文末尾会给出示例。）如果你不希望在文末打印参考文献表，则可以使用 \doccmddef{nobibliography} 命令代替。
+
+若要在同一位置插入多个引用，\cite[-3\baselineskip]{Tufte2006,Tufte1990} 可以提供一个由逗号分隔的键列表，并同样使用可选的垂直偏移参数：\Verb|\cite{Tufte2006,Tufte1990}|。
+\begin{docspec}
+  \doccmd{cite}[\docopt{offset}]\{\docarg{bibkey1,bibkey2,\ldots}\}
+\end{docspec}
+
+\section{图与表}\label{sec:figures-and-tables}
+图像和图形在 Tufte 的作品中发挥着核心作用。除了标准的 \docenvdef{figure} 和 \docenvdef{tabular} 环境之外，这一风格还提供了适用于通栏浮动体的特殊 figure 和 table 环境。
+
+整页宽度的图表可以放在 \docenvdef{figure*} 或 \docenvdef{table*} 环境中。若要把图或表放到边栏中，可以使用 \docenvdef{marginfigure} 或 \docenvdef{margintable} 环境，如下所示，见图~\ref{fig:marginfig}：
+
+\begin{marginfigure}%
+  \includegraphics[width=\linewidth]{helix}
+  \caption{这是一个边栏图。该螺旋线由
+    $x = \cos(2\pi z)$、$y = \sin(2\pi z)$ 和 $z = [0, 2.7]$ 定义。
+    该图使用 Asymptote 绘制，见 \protect\url{http://asymptote.sf.net/}。}
+  \label{fig:marginfig}
+\end{marginfigure}
+
+\begin{docspec}
+\textbackslash begin\{marginfigure\}\\
+  \qquad\textbackslash includegraphics\{helix\}\\
+  \qquad\textbackslash caption\{This is a margin figure.\}\\
+  \qquad\textbackslash label\{fig:marginfig\}\\
+\textbackslash end\{marginfigure\}\\
+\end{docspec}
+
+\docenv{marginfigure} 和 \docenv{margintable} 环境都接受一个可选参数 \docopt{offset}，用于调整图或表的垂直位置。相关示例可参考上文 “\nameref{sec:sidenotes}” 一节。其规范如下：
+\begin{docspec}
+  \textbackslash{begin\{marginfigure\}[\docopt{offset}]}\\
+  \qquad\ldots\\
+  \textbackslash{end\{marginfigure\}}\\
+  \mbox{}\\
+  \textbackslash{begin\{margintable\}[\docopt{offset}]}\\
+  \qquad\ldots\\
+  \textbackslash{end\{margintable\}}\\
+\end{docspec}
+
+图~\ref{fig:fullfig} 演示了 \docenv{figure*} 环境，而图~\ref{fig:textfig} 则演示了普通的 \docenv{figure} 环境。
+
+\begin{figure*}[h]
+  \includegraphics[width=\linewidth]{sine.pdf}%
+  \caption{这幅图展示了 $y = \sin x$ 在大约 $x = [-10, 10]$ 区间上的图像。
+  \emph{请注意，这幅图占据了整页宽度。}}%
+  \label{fig:fullfig}%
+\end{figure*}
+
+\begin{figure}
+  \includegraphics{hilbertcurves.pdf}
+%  \checkparity This is an \pageparity\ page.%
+  \caption[不同阶数 $n$ 的 Hilbert 曲线。][5\baselineskip]{不同阶数 $n$ 的 Hilbert 曲线。\emph{请注意，这幅图只占据正文版心宽度。}}
+  \label{fig:textfig}
+  %\zsavepos{pos:textfig}
+\end{figure}
+
+与边注和边栏注类似，图表题注有时也需要调整垂直位置。\doccmddef{caption} 命令现在接受第二个可选参数，用于通过给定一个长度值来实现这种调整。你可以采用以下任意一种形式来书写题注：
+\begin{docspec}
+  \doccmd{caption}\{\docarg{long caption}\}\\
+  \doccmd{caption}[\docarg{short caption}]\{\docarg{long caption}\}\\
+  \doccmd{caption}[][\docopt{offset}]\{\docarg{long caption}\}\\
+  \doccmd{caption}[\docarg{short caption}][\docopt{offset}]%
+                  \{\docarg{long caption}\}
+\end{docspec}
+正的 \docopt{offset} 会把题注向页面下方推移。若提供了 short caption，它将出现在图表目录中；否则目录中会显示长题注。需要注意的是，虽然 \docopt{short caption} 和 \docopt{offset} 都是可选参数，但它们必须按顺序提供。因此，如果你想指定 \docopt{offset} 却不提供 \docopt{short caption}，就必须先写一组空方括号 \Verb|[]|，以通知 \doccmd{caption} 使用默认的长题注。例如，上图~\ref{fig:textfig} 的题注写法是：
+\begin{docspec}
+  \doccmd{caption}[Hilbert curves...][6pt]\{Hilbert curves...\}
+\end{docspec}
+
+表~\ref{tab:normaltab} 展示了使用 \docpkg{booktabs} 宏包排出的表格。请注意其中没有竖线，因为竖线只会让表格数据显得更加杂乱。
+
+\begin{table}[ht]
+  \centering
+  \fontfamily{ppl}\selectfont
+  \begin{tabular}{ll}
+    \toprule
+    \booktableheadrow
+    \booktableheadcell{边距项目} & \booktableheadcell{长度} \\
+    \midrule
+    纸张宽度 & \unit[8\nicefrac{1}{2}]{inches} \\
+    纸张高度 & \unit[11]{inches} \\
+    正文版心宽度 & \unit[6\nicefrac{1}{2}]{inches} \\
+    正文与边注间距 & \unit[\nicefrac{3}{8}]{inches} \\
+    边注宽度 & \unit[2]{inches} \\
+    \bottomrule
+  \end{tabular}
+  \caption{这是 Tufte-handout 类中各类边距的尺寸。}
+  \label{tab:normaltab}
+  %\zsavepos{pos:normaltab}
+\end{table}
+
+\newthought{有时} \LaTeX{} 会给出如下错误信息：\label{err:too-many-floats}
+\begin{docspec}
+  Error: Too many unprocessed floats
+\end{docspec}
+\LaTeX{} 会尝试把浮动体放置到页面上最佳的位置。但在页面尚未排版完成之前，它并不知道那些最佳位置究竟在哪里。如果某一页上的浮动体太多，包括边注、边栏注、图、表等，\LaTeX{} 可能会因为用于追踪浮动体的“槽位”不够而报出上述错误。
+
+\LaTeX{} 初始只分配 18 个槽位来存储浮动体。为了解决这个限制，\TL 文档类提供了 \doccmddef{morefloats} 命令，用于额外保留更多槽位。
+
+第一次调用 \doccmd{morefloats} 时，会额外分配 34 个槽位；第二次调用时，会再额外分配 26 个槽位。
+
+\doccmd{morefloats} 最多只能调用两次。第三次调用时就会触发错误。这是因为再继续分配更多浮动体槽位可能会使 \LaTeX{} 内存不足。
+
+如果在调用 \doccmd{morefloats} 两次之后，你仍然遇到 \texttt{Too many unprocessed floats} 错误，那么还有几个办法可以尝试。
+
+\doccmddef{FloatBarrier} 命令会立即处理当前所有浮动体，然后再继续排版后续内容。由于 \doccmd{FloatBarrier} 会开启一个新段落，因此你应当把它放在段落的开头或结尾。
+
+\doccmddef{clearpage} 命令也会先处理所有浮动体，但它不是开启新段落，而是直接另起一页。
+
+你也可以稍微调整浮动体的位置，例如把某个图或表移到下一页，或者减少边注数量。每一个边注实际上会占用 \emph{两个} 槽位。
+
+当浮动体被放置完成之后，\LaTeX{} 会把相应槽位标记为空闲，以供下一页继续使用。
+
+\section{题注}
+你可能会注意到题注有时会出现对齐不佳的问题。由于 \LaTeX{} 的浮动机制，我们无法确切知道浮动体最终会被放到哪里。因此，\TL 文档类提供了一些命令来手动覆盖题注的位置。
+
+\paragraph{垂直对齐} 若要覆盖垂直对齐方式，请在浮动体环境内部使用 \doccmd{setfloatalignment} 命令。例如：
+
+\begin{fullwidth}
+\begin{docspec}
+  \textbackslash begin\{figure\}[btp]\\
+  \qquad \textbackslash includegraphics\{sinewave\}\\
+  \qquad \textbackslash caption\{This is an example of a sine wave.\}\\
+  \qquad \textbackslash label\{fig:sinewave\}\\
+  \qquad \hlred{\textbackslash setfloatalignment\{b\}\% forces caption to be bottom-aligned}\\
+  \textbackslash end\{figure\}
+\end{docspec}
+\end{fullwidth}
+
+\noindent \doccmddef{setfloatalignment} 命令的语法如下：
+
+\begin{docspec}
+  \doccmd{setfloatalignment}\{\docopt{pos}\}
+\end{docspec}
+
+\noindent 其中 \docopt{pos} 可以取 \texttt{b}，即底部对齐题注，或 \texttt{t}，即顶部对齐题注。
+
+\paragraph{水平对齐}\label{par:overriding-horizontal}
+若要覆盖水平对齐方式，可以在浮动体环境中使用 \doccmd{forceversofloat} 或 \doccmd{forcerectofloat} 命令。例如：
+
+\begin{fullwidth}
+\begin{docspec}
+  \textbackslash begin\{figure\}[btp]\\
+  \qquad \textbackslash includegraphics\{sinewave\}\\
+  \qquad \textbackslash caption\{This is an example of a sine wave.\}\\
+  \qquad \textbackslash label\{fig:sinewave\}\\
+  \qquad \hlred{\textbackslash forceversofloat\% forces caption to be set to the left of the float}\\
+  \textbackslash end\{figure\}
+\end{docspec}
+\end{fullwidth}
+
+\doccmddef{forceversofloat} 命令会让算法假定该浮动体被放在左页，也就是 verso 页；相反，\doccmddef{forcerectofloat} 会让算法假定该浮动体位于右页，也就是 recto 页。
+
+
+\section{通栏文本块}
+
+除了新的浮动体类型之外，这一风格还提供了一个 \docenvdef{fullwidth} 环境，可让内容横跨正文版心与边注区域。
+
+\begin{Verbatim}
+\begin{fullwidth}
+Lorem ipsum dolor sit amet...
+\end{fullwidth}
+\end{Verbatim}
+
+\begin{fullwidth}
+\small\itshape\lipsum[1]
+\end{fullwidth}
+
+\section{排版学}\label{sec:typography}
+
+\subsection{字体}\label{sec:typefaces}\index{typefaces}
+如果系统中安装了 Palatino、\textsf{Helvetica} 和 \texttt{Bera Mono}，本样式会自动使用它们。否则将退回使用 Computer Modern 字体族。
+
+\subsection{字距调整}\label{sec:letterspacing}
+这个文档类新增了两个字距调整命令，并改进了若干现有命令的字距行为。
+
+在排版 \allcaps{ALL CAPS} 或 \smallcaps{small caps} 这样的字符串时，字母之间的间距应略微增大。\cite[][p.32]{Bringhurst2005} \doccmddef{allcaps} 命令可以为 \allcaps{FULL CAPITAL LETTERS} 提供正确的字距，而 \doccmddef{smallcaps} 命令则会为 \smallcaps{small capital letters} 提供合适的字距。这两个命令也会自动将文本转换成相应的大小写形式。
+
+\doccmddef{textsc} 命令也被重新定义，以包含字距调整。不过，\doccmd{textsc} 参数中的字母大小写会保持原样。因此，你可以同时使用大写和小写字母：
+\textsc{The Initial Letters Of The Words In This Sentence Are Capitalized.}
+
+
+
+\section{文档类选项}\label{sec:options}
+
+\index{class options|(}
+\doccls{tufte-book} 类基于 \LaTeX\ 的 \doccls{book} 文档类，因此你可以传入所有常见的 book 选项。不过，\doccls{tufte-book} 也提供了一些专属选项。
+
+\docclsoptdef{a4paper} 选项会把纸张大小设为 \smallcaps{A4}，而不是默认的 \smallcaps{US} letter。
+
+\docclsoptdef{sfsidenotes} 选项会把边注和标题区排成 \textsf{sans serif} 字体，而不是默认的 roman。
+
+\docclsoptdef{twoside} 选项会修改页眉，使页码显示在外侧边缘，而不是像 \docclsoptdef{oneside} 模式那样总是出现在右侧边缘。
+
+\docclsoptdef{symmetric} 选项会把边注排在页面外侧边缘。这更符合传统书籍的印刷方式，但与 Tufte 自己的书籍设计不同，后者总是把边注排在右侧。该选项会隐式启用 \docclsopt{twoside}。
+
+\docclsoptdef{justified} 选项会把正文设置为左右两端对齐。默认状态是右侧参差。Tufte 的书正文就是这样排的；它能减少不必要的断词，也使较窄的文本栏更易阅读。
+
+\docclsoptdef{bidi} 选项会加载 \docpkg{bidi} 宏包，用于配合 \tXeLaTeX\ 排版双向文本。由于 \docpkg{bidi} 必须在定义 sidenotes 和 cite 命令之前就被加载，因此不能在文档前导区中后置加载。
+
+\docclsoptdef{debug} 选项会让 \TL 类把调试信息输出到日志文件中，便于排查错误，同时还会把图像替换成轮廓框。
+
+\docclsoptdef{nofonts} 选项会阻止 \TL 类自动加载 Palatino 和 Helvetica。如果你希望自行加载字体，应当使用这个选项。如果你正在使用 \tXeLaTeX，实际上该选项是隐含启用的，也就是说，使用 \tXeLaTeX 时 Palatino 和 Helvetica 不会自动加载。
+
+\docclsoptdef{nols} 选项会关闭字距处理代码。\TL 类会尝试加载合适的字距宏包，也就是 pdf\TeX 的 \docpkg{letterspace} 或 \docpkg{soul}。不过如果你是在 \tXeLaTeX\ 下并搭配 \docpkg{fontenc} 使用，就需要自己配置字距。
+
+\docclsoptdef{notitlepage} 选项会让 \doccmd{maketitle} 生成标题块而不是完整标题页。\doccls{book} 类默认使用标题页，\doccls{handout} 类默认使用标题块。与之对应的 \docclsoptdef{titlepage} 选项则会强制生成完整标题页。
+
+\docclsoptdef{notoc} 选项会关闭 \TL 自定义的目录，也就是 \textsc{toc} 设计。目前这套目录设计只显示无编号章节标题，不显示 sections 或 subsections。启用 \docclsopt{notoc} 之后，会退回到 \LaTeX{} 默认目录样式。
+
+\docclsoptdef{nohyper} 选项会阻止加载 \docpkg{hyperref} 宏包。默认情况下会加载 \docpkg{hyperref}，并把 \doccmd{title} 与 \doccmd{author} 的内容写入生成 \textsc{pdf} 的元数据中。
+
+\index{class options|)}

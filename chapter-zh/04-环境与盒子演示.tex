@@ -1,0 +1,248 @@
+
+\chapter{环境与盒子演示}
+\label{ch:showcase}
+
+本章对照 \texttt{OUC-Haide-Beamer-Template} 的演示帧，让书籍模板与幻灯片模板共享同一套环境名、配色逻辑与代码块样式。每节左侧为环境的\emph{渲染效果}，右侧为对应的\emph{源代码}；当前激活的配色为 \texttt{\OUCPaletteName}，可通过 \doccmd{OUCSetPalette}\{N\} 切换。
+
+\section{配色槽位语义}\index{palette!slots}
+六个槽位驱动所有彩色元素：
+\texttt{pal1}=\hlred{paleblue} 为代码块底色，
+\texttt{pal2} 为 \docenv{Exa}/\docenv{Rmk}/\docenv{Intro} 的正文底色，
+\texttt{pal4} 为同三者的标题填充色，
+\texttt{pal5}=\hlred{primary} 为强调色（定理标题、章节内强调），
+\texttt{pal6}=\hlred{accent} 为最深色（定义标题徽、章标题色）。
+
+\section{中文字符覆盖测试}\index{Chinese character coverage}
+
+下面一段刻意混入若干生僻字与异体字，用于在编译时验证 CJK 字体链能否完整覆盖：\textbf{齉靐龘囙囧囍嬲嫑烎巭玊夯邓阴阳彳亍卩阝廴辶瓦丬灬罒皿夊}。若上述任意字符显示为方框或缺字符号，请检查 \texttt{Songti SC} / \texttt{Source Han Serif SC} / \texttt{Noto Serif CJK SC} 至少有一项可用。局部楷体：\textkai{这是楷体示例，引用古文「天行健，君子以自强不息」。}
+
+\section{定义与定理}\index{environments!De@\texttt{De}}\index{environments!The@\texttt{The}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{De}{群}{de:g}
+群是一个集合，配备一个满足结合律的二元运算，存在单位元，且每个元素都有逆元。
+\end{De}
+\begin{The}{Lagrange}{the:lag}
+若 $H\le G$ 是有限群 $G$ 的子群，则 $|H|$ 整除 $|G|$。
+\end{The}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\begin{De}{群}{de:g}
+  群是一个集合，配备
+  满足结合律的二元运算。
+\end{De}
+\begin{The}{Lagrange}{the:lag}
+  若 $H\le G$，
+  则 $|H|$ 整除 $|G|$。
+\end{The}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{例与注}\index{environments!Exa@\texttt{Exa}}\index{environments!Rmk@\texttt{Rmk}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{Exa}{}{exa:cyc}
+$\mathbb{Z}/6\mathbb{Z}$ 是阶为 $6$ 的循环群，由 $1$ 的剩余类生成。
+\end{Exa}
+\begin{Rmk}{}{rmk:tr}
+平凡群 $\{e\}$ 是同构意义下阶为 $1$ 的唯一群。
+\end{Rmk}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\begin{Exa}{}{exa:cyc}
+  $\mathbb{Z}/6\mathbb{Z}$
+  是阶为 $6$ 的循环群。
+\end{Exa}
+\begin{Rmk}{}{rmk:tr}
+  平凡群 $\{e\}$ 是
+  阶为 $1$ 的唯一群。
+\end{Rmk}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{命题、引理与推论}\index{environments!Pro@\texttt{Pro}}\index{environments!Le@\texttt{Le}}\index{environments!Co@\texttt{Co}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{Pro}{封闭性}{pro:cl}
+若 $H,K\le G$，则 $H\cap K$ 对群运算封闭。
+\end{Pro}
+\begin{Le}{消去律}{le:can}
+若群中 $ab=ac$，则 $b=c$。
+\end{Le}
+\begin{Co}{阶整除}{co:ord}
+$|\langle g\rangle|$ 整除 $|G|$。
+\end{Co}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\begin{Pro}{封闭性}{pro:cl}
+  $H\cap K$ 对群运算封闭。
+\end{Pro}
+\begin{Le}{消去律}{le:can}
+  若 $ab=ac$，则 $b=c$。
+\end{Le}
+\begin{Co}{阶整除}{co:ord}
+  $|\langle g\rangle|$
+  整除 $|G|$。
+\end{Co}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{证明与注记}\index{environments!Proof@\texttt{Proof}}\index{environments!Boxed@\texttt{Boxed}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{Proof}
+若 $x\in H\cap K$，则 $x\in H$ 且 $x\in K$，故交集仍是子群。
+\end{Proof}
+\begin{Boxed}
+圆角容器，适合用于段落规模的注记、推导小结或视觉上需要聚合的提示信息。
+\end{Boxed}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\begin{Proof}
+  若 $x\in H\cap K$，
+  则 $x\in H$ 且 $x\in K$。
+\end{Proof}
+\begin{Boxed}
+  圆角容器，适合段落
+  规模的注记或小结。
+\end{Boxed}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{Intro 与 RightIntro}\index{environments!Intro@\texttt{Intro}}\index{environments!RightIntro@\texttt{RightIntro}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{Intro}{章节引子}{标题徽贴在左上角的引子盒，适合章首或节首预告本节目标。}
+\end{Intro}
+\begin{RightIntro}{右侧引子}{镜像版本，标题徽贴在右上角。}
+\end{RightIntro}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\begin{Intro}{章节引子}
+  {标题贴在左上角。}
+\end{Intro}
+\begin{RightIntro}{右侧引子}
+  {标题贴在右上角。}
+\end{RightIntro}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{UnderlineBox 与 Quote}\index{UnderlineBox command@\protect\hangleft{\texttt{\tuftebs}}\texttt{UnderlineBox}}\index{Quote command@\protect\hangleft{\texttt{\tuftebs}}\texttt{Quote}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\UnderlineBox{由上下两条 primary 色短线包裹的下划线块。}
+\Quote{数学是科学的女王。}{C.\,F.~高斯}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\UnderlineBox{由两条彩色短线
+  包裹的下划线块。}
+\Quote{数学是科学的女王。}
+      {C.\,F.~高斯}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{Minipage、Eq、EqL}\index{Minipage command@\protect\hangleft{\texttt{\tuftebs}}\texttt{Minipage}}\index{Eq command@\protect\hangleft{\texttt{\tuftebs}}\texttt{Eq}}\index{EqL command@\protect\hangleft{\texttt{\tuftebs}}\texttt{EqL}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\Minipage{0.46}{\textbf{左侧。}\\双栏布局辅助宏。}{0.46}{\textbf{右侧。}\\两个宽度之和需小于 $1$。}
+\Eq{a^2 + b^2 = c^2}
+\EqL{e^{i\pi} + 1 = 0}{eq:euler}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\Minipage{0.46}{左侧内容}
+         {0.46}{右侧内容}
+\Eq{a^2 + b^2 = c^2}
+\EqL{e^{i\pi} + 1 = 0}{eq:euler}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{Info / Warn / Result / Goal 盒子}\index{environments!infobox@\texttt{infobox}}\index{environments!warnbox@\texttt{warnbox}}\index{environments!resultbox@\texttt{resultbox}}\index{environments!goalbox@\texttt{goalbox}}
+
+\begin{fullwidth}
+\begin{minipage}[t]{0.48\linewidth}
+\begin{infobox}
+背景、定义与上下文。
+\end{infobox}
+\begin{warnbox}
+注意事项、假设与风险。
+\end{warnbox}
+\begin{resultbox}
+结论、发现与关键产出。
+\end{resultbox}
+\begin{goalbox}
+\centering 简短的高亮信息。
+\end{goalbox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\begin{infobox}...\end{infobox}
+\begin{warnbox}...\end{warnbox}
+\begin{resultbox}...\end{resultbox}
+\begin{goalbox}...\end{goalbox}
+\end{lstlisting}
+\end{minipage}
+\end{fullwidth}
+
+\section{代码块样式}\index{lstlisting style@\texttt{oucbooklisting} style}
+
+\texttt{oucbooklisting} 已注册为 \docpkg{listings} 包的默认样式，并与 beamer 模板共用：paleblue 底色、primary 关键字、accent 字符串、灰色描边。
+
+\subsection{Matlab}
+\begin{lstlisting}[language=Matlab]
+function y = laplacian(u, dx)
+% 均匀网格上的五点离散拉普拉斯算子。
+y = (circshift(u,[0 -1]) + circshift(u,[0 1]) ...
+   + circshift(u,[-1 0]) + circshift(u,[ 1 0]) - 4*u) / dx^2;
+end
+\end{lstlisting}
+
+\subsection{Python}
+\begin{lstlisting}[language=Python]
+def softmax(x):
+    """Numerically stable softmax."""
+    z = x - x.max(axis=-1, keepdims=True)
+    e = np.exp(z)
+    return e / e.sum(axis=-1, keepdims=True)
+\end{lstlisting}
+
+\subsection{Shell}
+\begin{lstlisting}[language=bash]
+latexmk -xelatex -interaction=nonstopmode Thomas-Tufte-book-zh.tex
+makeindex Thomas-Tufte-book-zh.idx
+latexmk -xelatex -interaction=nonstopmode Thomas-Tufte-book-zh.tex
+\end{lstlisting}
+
+\subsection{LaTeX}
+\begin{lstlisting}[language={[LaTeX]TeX}]
+\usepackage{Thomas-Tufte-bilingual-book}
+\SetBookLanguage{chinese}
+\OUCSetPalette{0}
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \mainmatter
+\end{document}
+\end{lstlisting}
+
+\cleardoublepage

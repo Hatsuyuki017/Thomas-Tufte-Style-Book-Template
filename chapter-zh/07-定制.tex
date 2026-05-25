@@ -1,0 +1,101 @@
+
+
+
+\chapter[定制 Tufte-LaTeX]{定制 \TL}
+\label{ch:customizing}
+
+默认情况下，\TL 文档类会尽可能精确地模拟 Tufte 书籍的设计。不过每一份文档都有自己的需求，因此你可能会遇到默认设置不足以胜任的情况。本章将探讨多种调整 \TL 文档类的方法，以便更好地适应你的文档需求。
+
+\section{文件钩子}
+\label{sec:filehooks}
+
+\index{file hooks|(}
+如果你经常使用 \TL 文档类来制作文档，那么把自定义设置保存在单独文件中，会比每次都复制到前导区更方便。\TL 文档类提供了三个文件钩子：\docfilehook{tufte-common-local.tex}{common}、\docfilehook{tufte-book-local.tex}{book} 和 \docfilehook{tufte-handout-local.tex}{handout}。\sloppy
+
+\begin{description}
+  \item[\docfilehook{tufte-common-local.tex}{common}]
+    如果该文件存在，它会在所有 \TL 文档类中被加载，并且位置位于任何文档类特定代码之前。如果你的自定义既适用于 book 类，也适用于 handout 类，就应当使用这个公共钩子文件。
+  \item[\docfilehook{tufte-book-local.tex}{book}]
+    如果该文件存在，它会在所有 common 和 book 特定代码之后加载。如果你的自定义只针对 book 类，请使用这个钩子文件。
+  \item[\docfilehook{tufte-common-handout.tex}{handout}]
+    如果该文件存在，它会在所有 common 和 handout 特定代码之后加载。如果你的自定义只适用于 handout 类，请使用这个钩子文件。
+\end{description}
+
+\index{file hooks|)}
+
+\section{带编号的节标题}
+\label{sec:numbered-sections}
+\index{headings!numbered}
+
+虽然 Tufte 在自己的书中通常不使用编号标题，但如果你有需求，也可以通过改变 \doccounter{secnumdepth} 计数器的值来启用编号。请根据下表选择你希望停止编号的标题层级，并将 \doccounter{secnumdepth} 设为该值。例如，如果你希望部分和章节带编号，而 section 和 subsection 不带编号，则可以使用：
+\begin{docspec}
+  \doccmd{setcounter}\{secnumdepth\}\{0\}
+\end{docspec}
+
+\TL 文档类默认的 \doccounter{secnumdepth} 值为 $-1$。
+
+\begin{table}
+  \footnotesize
+  \begin{center}
+    \begin{tabular}{lr}
+      \toprule
+      \booktableheadrow
+      \booktableheadcell{标题层级} & \booktableheadcell{值} \\
+      \midrule
+      Part（在 \doccls{tufte-book} 中） & $-1$ \\
+      Part（在 \doccls{tufte-handout} 中） & $0$ \\
+      Chapter（仅在 \doccls{tufte-book} 中） & $0$ \\
+      Section & $1$ \\
+      Subsection & $2$ \\
+      Subsubsection & $3$ \\
+      Paragraph & $4$ \\
+      Subparagraph & $5$ \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{与 \texttt{secnumdepth} 计数器配合使用的标题层级。}
+\end{table}
+
+\section{改变纸张尺寸}
+\label{sec:paper-size}
+
+\TL 类目前只提供三种纸张规格：\textsc{a4}、\textsc{b5} 和 \textsc{us} letter。如果你希望指定不同的纸张尺寸，以及页边距，可以在文档前导区或钩子文件中使用 \doccmd[geometry]{geometrysetup} 命令。该命令的完整说明请参见 \docpkg{geometry} 宏包文档。\cite[-1em][p.33]{pkg-geometry}
+
+
+\section{定制边栏材料}
+\label{sec:marginal-material}
+
+边栏材料包括边注、引用、边栏注和题注。通常情况下，边栏材料的对齐方式会跟随正文。如果你指定了 \docclsopt{justified} 选项，那么所有边栏材料也会采用两端对齐；如果不指定，则边栏材料默认右侧参差。
+
+你也可以通过以下文档类选项单独设置边栏材料的对齐方式：\docclsopt{sidenote}、\docclsopt{marginnote}、\docclsopt{caption}、\docclsopt{citation} 和 \docclsopt{marginals}。每个选项都对应其名称所指的边栏材料类型，而 \docclsopt{marginals} 会同时设置这四类材料的对齐方式。
+
+每个选项都可以取以下五种对齐方式之一：
+\begin{description}
+  \item[\docclsopt{justified}] 左右两端对齐，也就是同时齐左齐右。
+  \item[\docclsopt{raggedleft}] 始终左侧参差，不考虑该材料位于哪一页。
+  \item[\docclsopt{raggedright}] 始终右侧参差，不考虑该材料位于哪一页。
+  \item[\doccls{raggedouter}] 如果材料位于跨页左页，也就是 verso，则左侧参差；否则右侧参差。这个选项在配合 \docclsopt{symmetric} 使用时尤其有用。
+  \item[\docclsopt{auto}] 如果指定了 \docclsopt{justified}，则采用两端对齐；否则采用右侧参差。这也是未显式指定时的默认值。
+\end{description}
+
+\noindent 例如，
+\begin{docspec}
+  \doccmdnoindex{documentclass}[symmetric,justified,marginals=raggedouter]\{tufte-book\}
+\end{docspec}
+会把正文设为两端对齐，并让所有边栏材料，包含边注、边栏注、题注和引用，紧贴正文一侧，而外侧边缘保持参差。
+
+\newthought{边栏材料的字体与样式}也可以通过以下命令来修改：
+
+\begin{docspec}
+  \doccmd{setsidenotefont}\{\docopt{font commands}\}\\
+  \doccmd{setcaptionfont}\{\docopt{font commands}\}\\
+  \doccmd{setmarginnotefont}\{\docopt{font commands}\}\\
+  \doccmd{setcitationfont}\{\docopt{font commands}\}
+\end{docspec}
+
+\doccmddef{setsidenotefont} 用于设置边注字体，\doccmddef{setcaptionfont} 用于设置题注字体，\doccmddef{setmarginnotefont} 用于设置边栏注字体，\doccmddef{setcitationfont} 用于设置引用字体。\docopt{font commands} 中可以包含字号命令，例如 \doccmdnoindex{footnotesize}、\doccmdnoindex{Huge}，字体样式命令，例如 \doccmdnoindex{sffamily}、\doccmdnoindex{ttfamily}、\doccmdnoindex{itshape}，颜色命令，例如 \doccmdnoindex{color}\texttt{\{blue\}}，以及其他调整方式。
+
+例如，如果你希望题注使用斜体无衬线字体，可以写成：
+\begin{docspec}
+  \doccmd{setcaptionfont}\{\doccmdnoindex{itshape}\doccmdnoindex{sffamily}\}
+\end{docspec}

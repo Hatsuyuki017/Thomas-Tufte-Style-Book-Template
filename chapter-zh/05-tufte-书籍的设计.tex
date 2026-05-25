@@ -1,0 +1,171 @@
+
+\chapter{Tufte 书籍的设计}
+\label{ch:tufte-design}
+
+
+\newthought{一本书的页面}通常会被划分为三个主要部分：前言部分（front matter，也称 preliminary matter 或 prelim）、正文部分（main matter，即核心正文）和后记部分（back matter，也称 end matter）。
+
+\newthought{前言部分}是指主文之前出现的所有材料。下表列出了 \VDQI、\EI、\VE 和 \BE 四本书在前言中出现的内容及其页码。括号中的页码表示该页没有印刷页码，但仍然被计入页面顺序之中。
+
+\bigskip
+\begin{minipage}{\textwidth}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{4}{c}{书籍} \\
+\cmidrule(l){2-5}
+\booktableheadrow
+\booktableheadcell{页面内容} & \booktableheadcell{\vdqi} & \booktableheadcell{\ei} & \booktableheadcell{\ve} & \booktableheadcell{\be} \\
+\midrule
+空白半标题页 & \hangp{1} & \hangp{1} & \hangp{1} & \hangp{1} \\
+卷首插页\footnotemark{}
+  & \hangp{2} & \hangp{2} & \hangp{2} & \hangp{2} \\
+完整标题页 & \hangp{3} & \hangp{3} & \hangp{3} & \hangp{3} \\
+版权页 & \hangp{4} & \hangp{4} & \hangp{4} & \hangp{4} \\
+目录 & \hangp{5} & \hangp{5} & \hangp{5} & \hangp{5} \\
+%Blank & -- & \hangp{6} & \hangp{6} & \hangp{6} \\
+题献页 & \hangp{6} & \hangp{7} & \hangp{7} & 7 \\
+%Blank & -- & \hangp{8} & -- & \hangp{8} \\
+题辞页 & -- & -- & \hangp{8} & -- \\
+引言 & \hangp{7} & \hangp{9} & \hangp{9} & 9 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{minipage}
+\vspace{-7\baselineskip}\footnotetext{这一页的内容因书而异。在
+  \vdqi 中该页为空白；在 \ei 和 \ve 中该页为卷首插页；
+  在 \be 中则包含三则题辞。}
+\vspace{7\baselineskip}
+
+\bigskip
+Tufte 书籍中的前言设计与传统前言设计略有不同。首先，传统书籍的前言页码通常采用小写罗马数字（例如 \eg, i, ii, iii, iv,~\ldots）。其次，前言部分的页码序列通常与正文页码分开，也就是说正文开始时页码会重新从 1 计起。相对地，Tufte 使用的是阿拉伯数字，而且其页码计数与正文保持在同一序列之中。
+
+Tufte 的四本书在设计上也存在一些差异。标题页对开的那一页，也就是上表中的 “frontispiece”，在不同书中内容不同。在 \VDQI 中这一页为空白；在 \EI 和 \VE 中这一页放置卷首插图；而在 \BE 中这一页则包含三则题辞。
+
+在 \vdqi 中，题献页位于第 6 页，与引言相对；而在其他几本书中，题献页单独占据一个跨页。在 \ve 中，一则题辞与引言首页共处于同一跨页中。
+
+前言部分的页码通常都不印出，只有在 \be 中，页码从题献页开始出现。
+
+\newthought{完整标题页}在 Tufte 的几本书之间也略有差别。四本书都把作者名放在页首，把书名置于页面中线稍上方，把出版社放在下边距附近。它们之间的一些差异归纳如下表。
+
+\bigskip
+\begin{center}
+\footnotesize
+\begin{tabular}{lllll}
+\toprule
+\booktableheadrow
+\booktableheadcell{特征} & \booktableheadcell{\vdqi} & \booktableheadcell{\ei} & \booktableheadcell{\ve} & \booktableheadcell{\be} \\
+\midrule
+作者 & & & & \\
+\quad 字体类别 & serif   & serif   & serif   & sans serif \\
+\quad 样式    & italics & italics & italics & upright, caps \\
+\quad 字号     & 24 pt   & 20 pt   & 20 pt   & 20 pt \\
+\addlinespace
+标题 & & & & \\
+\quad 字体类别 & serif   & serif   & serif   & sans serif \\
+\quad 样式    & upright & italics & upright & upright, caps \\
+\quad 字号     & 36 pt   & 48 pt   & 48 pt   & 36 pt \\
+\addlinespace
+副标题 & & & & \\
+\quad 字体类别 & \na     & \na     & serif   & \na \\
+\quad 样式    & \na     & \na     & upright & \na \\
+\quad 字号     & \na     & \na     & 20 pt   & \na \\
+\addlinespace
+版本说明 & & & & \\
+\quad 字体类别 & sans serif    & \na  & \na  & \na \\
+\quad 样式    & upright, caps & \na  & \na  & \na \\
+\quad 字号     & 14 pt         & \na  & \na  & \na \\
+\addlinespace
+出版社 & & & & \\
+\quad 字体类别 & serif   & serif   & serif   & sans serif \\
+\quad 样式    & italics & italics & italics & upright, caps \\
+\quad 字号     & 14 pt   & 14 pt   & 14 pt   & 14 pt \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{figure*}[p]
+\fbox{\includegraphics[width=0.45\linewidth]{vdqi-title.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{ei-title.pdf}}
+\\\vspace{\baselineskip}
+\fbox{\includegraphics[width=0.45\linewidth]{ve-title.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{be-title.pdf}}
+\end{figure*}
+
+\newthought{目录页}让我们第一次真正看到正文部分的结构。\VDQI 被分成两个部分，每个部分包含若干章节；而另外三本书只有章节结构，并不分部。
+
+\begin{figure*}[p]\index{table of contents}
+\fbox{\includegraphics[width=0.45\linewidth]{vdqi-contents.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{ei-contents.pdf}}
+\\\vspace{\baselineskip}
+\fbox{\includegraphics[width=0.45\linewidth]{ve-contents.pdf}}
+\hfill
+\fbox{\includegraphics[width=0.45\linewidth]{be-contents.pdf}}
+\end{figure*}
+
+
+\section{字体}\label{sec:typefaces1}\index{typefaces}
+\index{fonts|see{typefaces}}
+
+Tufte 的书主要使用两种字体：Bembo 和 Gill Sans。Bembo 用于标题和正文，而 Gill Sans 则用于 \BE 的标题页和开篇题辞。
+
+由于默认的 \LaTeX{} 安装中通常没有 Bembo 和 Gill Sans，\TL 文档类默认分别使用 Palatino 和 Helvetica 作为替代。此外，Bera Mono 用于 \texttt{等宽文本} 的排版。
+
+\TL 文档类中定义的字号如下：
+
+\noindent 正文默认字号为 10/14，边注与题注为 8/10；主要标题依次上升到
+11/15 与 12/16，而最大的书籍标题在章节处达到 20/30，在部分标题处达到
+24/36。
+
+\section{标题层级}\label{sec:headings1}\index{headings}
+
+Tufte 的书中包含以下标题层级：部分、章节，\sidenote{部分和章节只在 \texttt{tufte-book} 类中定义。} 以及 sections、subsections 和 paragraphs。默认未定义的层级包括 sub-subsections 和 subparagraphs。
+
+\begin{table}[h]
+  \begin{center}
+    \footnotesize%
+    \begin{tabular}{lcr}
+      \toprule
+      \booktableheadrow
+      \booktableheadcell{标题层级} & \booktableheadcell{样式} & \booktableheadcell{尺寸} \\
+      \midrule
+      Part & roman & \measure{24}{36}{40} \\
+      Chapter & italic & \measure{20}{30}{40} \\
+      Section & italic & \measure{12}{16}{26} \\
+      Subsection & italic & \measure{11}{15}{26} \\
+      Paragraph & italic & 10/14 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{\BE 中使用的标题样式。}
+  \label{tab:heading-styles}
+\end{table}
+
+\paragraph{Paragraph} 段落标题像这里这样使用斜体引导，并与随后的正文之间保留少量空白。
+
+\section{环境}
+
+以下特征定义了不同环境的排版方式：
+
+
+\begin{table}[h]
+  \begin{center}
+    \footnotesize%
+    \begin{tabular}{lcl}
+      \toprule
+      \booktableheadrow
+      \booktableheadcell{环境} & \booktableheadcell{字号} & \booktableheadcell{说明} \\
+      \midrule
+      正文 & \measure{10}{14}{26} & \\
+      块引用 & \measure{9}{12}{24} & 左右各缩进 \unit[1]{pc} \\
+      边注 & \measure{8}{10}{12} & 边注编号内联排版，后接一个词距 \\
+      题注 & \measure{8}{10}{12} &  \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{\BE 中使用的环境样式。}
+  \label{tab:environment-styles}
+\end{table}

@@ -1,0 +1,20 @@
+
+% Active-palette showcase page (unnumbered, not added to ToC).
+% Six 1cm colour bands of pal1..pal6 with 1.6cm vertical gaps.
+% Convention (palette-independent): pal1..pal3 use black text, pal4..pal6 use white text.
+% The palette's design-philosophy paragraph is shifted into the margin via \marginnote.
+\cleardoublepage
+\thispagestyle{empty}
+\chapter*{\OUCPaletteName}
+\marginnote{The factory ground tone of the template. Blue is the colour of the young scholar---from the first lecture page at dawn, through the library window at noon, to the cold lab light at midnight, blue spans the entire colour temperature of academic life. Six tones run from lightest to deepest, deliberately restrained, mirroring the arc of opening a book and closing it again. The palette does not ask to be looked at; it asks to let the words themselves be seen.}
+\noindent\colorbox{oucpal1}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{black}Paper Foam\quad\textnormal{\texttt{rgb(239, 246, 255)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal2}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{black}Desert Foam\quad\textnormal{\texttt{rgb(219, 234, 254)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal3}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{black}Sea Smoke\quad\textnormal{\texttt{rgb(96, 165, 250)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal4}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{white}Crisp Sky\quad\textnormal{\texttt{rgb(37, 99, 235)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal5}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{white}Twilight Blue\quad\textnormal{\texttt{rgb(30, 58, 138)}}}}\par
+\vspace{1.6cm}
+\noindent\colorbox{oucpal6}{\parbox[c][1cm][c]{\dimexpr\linewidth-2\fboxsep\relax}{\centering\bfseries\color{white}Midnight Hull\quad\textnormal{\texttt{rgb(30, 41, 59)}}}}\par

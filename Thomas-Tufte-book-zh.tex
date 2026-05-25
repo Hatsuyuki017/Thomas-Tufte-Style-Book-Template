@@ -1,0 +1,138 @@
+% Root bilingual entry point for the Tufte-style book sample.
+% Set the language to chinese and compile this document with XeLaTeX.
+\documentclass[nofonts,nohyper,nobib]{tufte-book}
+
+% Allowed values: english, chinese.
+\newcommand{\BookLanguage}{chinese}
+
+\usepackage{Thomas-Tufte-bilingual-book}
+% 西文字体方案：
+%   tufte  = A_Tufte_Style_Book_with_VDQI 字体方案 (Palatino + Helvetica + Bera Mono)。
+%   beamer = OUC-Haide-Beamer-Template 字体方案 (RobotoSerif + Menlo + national-2)，
+%            从 ./fonts/ 加载（OUC-Haide-Beamer-Template-main/fonts 的副本）。
+% 切换只影响西文/等宽/Display 字体，CJK 字体链保持 Songti SC 等不变。
+\SetBookFontScheme{tufte}
+% \SetBookFontScheme{beamer}
+\SetBookLanguage{\BookLanguage}
+\OUCSetPalette{0} % 0..23，已扩展为当前对话中讨论过的全部主题配色。
+% 如需京都方案中的朱红点睛色，可使用 \textcolor{spotcolor}{...}。
+
+%%
+% Book metadata
+\title{Thomas Shang 的 Tufte 风格书籍模板}
+\date{版本说明}
+\author[Thomas Shang \& Tufte-LaTeX Developers]{Thomas Shang \& Tufte-LaTeX Developers}
+\publisher{本书出版社}
+
+\begin{document}
+
+% Front matter
+\frontmatter
+
+% r.1 blank page
+% \blankpage
+
+% v.2 epigraphs
+% \newpage\thispagestyle{empty}
+% \openepigraph{%
+% 公众对糟糕设计往往比对优秀设计更加熟悉。
+% 在某种意义上，公众已经被训练去偏爱糟糕设计，
+% 因为这正是他们日常所接触的东西。
+% 新事物会让人感到威胁，旧事物则让人安心。
+% }{Paul Rand}
+% \vfill
+% \openepigraph{%
+% 一个设计者达到完美，并不是因为已经没有东西可以再添加，
+% 而是因为已经没有东西可以再删减。
+% }{Antoine de Saint-Exup\'{e}ry}
+% \vfill
+% \openepigraph{%
+% \ldots 一个新系统的设计者不仅必须是实现者，
+% 也必须是第一个大规模使用者；设计者还应当撰写第一版用户手册\ldots
+% 如果我没有亲自参与所有这些工作，
+% 数以百计的改进就根本不会发生，
+% 因为我既不会想到它们，也不会意识到它们为什么重要。
+% }{Donald E. Knuth}
+
+
+% r.3 full title page
+\maketitle
+
+
+% v.4 copyright page
+\newpage
+\begin{fullwidth}
+~\vfill
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+版权所有 \copyright\ \the\year\ \thanklessauthor
+
+\par 由 \thanklesspublisher 出版
+
+\par tufte-latex.googlecode.com
+
+\par 本文件依据 Apache License, Version 2.0（以下简称“许可协议”）发布；
+未经许可，不得使用本文件。你可以在
+\url{http://www.apache.org/licenses/LICENSE-2.0}
+获得许可协议全文。除非适用法律要求或书面同意，
+依据该许可协议分发的软件均按“原样”提供，不附带任何明示或暗示的保证或条件。
+有关许可与限制的完整说明，请参见许可协议正文。\index{license}
+
+\par\textit{首次印刷，\monthyear}
+
+\par\medskip
+本模板由 Thomas Shang 在 Tufte 风格书籍模板的基础上精心打磨与重新设计而成，
+在排版细节、配色体系与中英双语工作流上均做了大量调整与扩展。项目主页：
+\url{https://github.com/Hatsuyuki017}。
+\end{fullwidth}
+
+% r.5 contents
+\tableofcontents
+\input{chapter-zh/01-palette-name}
+
+\listoffigures
+
+\listoftables
+
+% r.7 dedication
+\cleardoublepage
+~\vfill
+\begin{doublespace}
+\noindent\fontsize{18}{22}\selectfont\itshape
+\nohyphenation
+谨献给热爱 \LaTeX{} 的读者，
+以及 \mbox{Edward R.~Tufte} 
+和 \mbox{Donald E.~Knuth} 的工作欣赏者。
+\end{doublespace}
+\vfill
+\vfill
+\input{chapter-zh/02-引言}
+\input{chapter-zh/03-配色索引}
+\mainmatter
+
+\part{模板参考}
+\input{chapter-zh/04-环境与盒子演示}
+
+\part{第一部分}
+\input{chapter-zh/05-tufte-书籍的设计}
+\input{chapter-zh/06-关于-tufte-book}
+\input{chapter-zh/07-定制}
+\input{chapter-zh/08-兼容性问题}
+\input{chapter-zh/09-故障排查与支持}
+
+
+
+
+
+
+
+\backmatter
+\input{chapter-zh/10-致谢}
+
+
+\printindex
+
+\input{chapter-zh/palette-intro-zh}
+
+\end{document}

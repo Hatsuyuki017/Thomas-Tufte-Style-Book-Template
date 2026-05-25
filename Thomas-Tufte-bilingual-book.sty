@@ -1,0 +1,1081 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{Thomas-Tufte-bilingual-book}[2026/05/23 Bilingual Tufte-style book support for English and Chinese]
+
+\RequirePackage{iftex}
+\ifXeTeX\else
+  \PackageError{Thomas-Tufte-bilingual-book}{This package requires XeLaTeX}{Switch the compiler to XeLaTeX to enable CJK font mapping.}
+\fi
+
+\RequirePackage{fontspec}
+\RequirePackage{xeCJK}
+\RequirePackage{etoolbox}
+\RequirePackage{xifthen}
+\RequirePackage{setspace}
+\RequirePackage{nameref}
+\RequirePackage{url}
+\RequirePackage[backend=biber, natbib=true, style=numeric]{biblatex}
+\addbibresource{sample-handout.bib}
+\RequirePackage{xargs}
+\RequirePackage{lipsum}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{graphicx}
+\RequirePackage{fancyvrb}
+\RequirePackage{xspace}
+\RequirePackage{units}
+\RequirePackage{nicefrac}
+\RequirePackage{multicol}
+\RequirePackage{amsmath}
+\RequirePackage{mathtools}
+\RequirePackage{amssymb}
+% fontenc[T1] BEFORE mathpazo so that mathpazo's NFSS hooks for the
+% URW Palladio (ppl / pplj) Type 1 text shapes -- which are only declared
+% for T1/OT1 encoding -- become reachable.  Without this, fontspec leaves
+% \encodingdefault at TU and TU/pplj/m/n is undefined, silently falling
+% back to Latin Modern even though mathpazo set \rmdefault=pplj.  Under
+% XeLaTeX, loading [T1]{fontenc} after fontspec switches \encodingdefault
+% to T1 for legacy NFSS text while fontspec's TU remains available for
+% \setsansfont / \setmonofont / xeCJK families set later.
+\RequirePackage[T1]{fontenc}
+% Pazo Math + Palatino / Pazo text family (URW Palladio) from psnfss.
+% [osf]  -> old-style figures (pplj),  [sc] -> real small caps NFSS shapes.
+% This is THE source of the body roman face under the tufte scheme; the
+% font-scheme macro \book@setlatinfonts@tufte deliberately does NOT call
+% \setmainfont so that mathpazo's \rmdefault=pplj remains in effect.
+\RequirePackage[osf,sc]{mathpazo}
+\RequirePackage{amsthm}
+\RequirePackage{listings}
+\RequirePackage[table]{xcolor}
+\RequirePackage{makeidx}
+% Note: sectsty was previously loaded here but it silently rewrites the
+% section/subsection font specifications -- even when no \sectionfont macro
+% is called -- and clobbers tufte-common.def's \titleformat{\section}{...}
+% (and ours).  We control headings via titlesec's \titleformat directly, so
+% sectsty is unnecessary and actively harmful; it's no longer required.
+\RequirePackage{titletoc}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins,breakable,theorems,most}
+\RequirePackage{thmtools}
+\RequirePackage{mdframed}
+\RequirePackage{wrapfig}
+\RequirePackage{epigraph}
+\RequirePackage{varwidth}
+\RequirePackage{enumitem}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,backgrounds,fit,calc,decorations.pathmorphing,shadows.blur,patterns}
+
+%% Placeholder for the display font used by beamer's environment titles.
+%% In the book it is a no-op (defaults to the regular bf serif); kept here so
+%% the byte-identical beamer environment bodies below still compile.
+\providecommand{\ouctitledisplay}{}
+
+%% Neutral text/accent colors carried over from beamer (kept stable across
+%% palettes for legibility).  hiP / goodG / linegray are used by warnbox /
+%% resultbox / Boxed respectively.
+\definecolor{inkdark}{RGB}{30,41,59}
+\definecolor{inkgray}{RGB}{71,85,105}
+\definecolor{hiP}{RGB}{220,38,38}
+\definecolor{goodG}{RGB}{16,185,129}
+
+\defaultfontfeatures{Ligatures=TeX, Scale=MatchLowercase}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{figure/}}
+\fvset{fontsize=\normalsize}
+\makeindex
+\makeatletter
+
+\providecommand{\OUCPaletteName}{}
+\providecommand{\OUCSpotColorName}{}
+
+\newcommand{\book@setpalettecolors}[7]{%
+  \definecolor{oucpal1}{RGB}{#2}%
+  \definecolor{oucpal2}{RGB}{#3}%
+  \definecolor{oucpal3}{RGB}{#4}%
+  \definecolor{oucpal4}{RGB}{#5}%
+  \definecolor{oucpal5}{RGB}{#6}%
+  \definecolor{oucpal6}{RGB}{#7}%
+  %% Semantic palette aliases — kept byte-identical to the beamer template:
+  %%   primary   = pal5 (second darkest, main emphasis)
+  %%   secondary = pal4 (mid-dark; theorem/example title backgrounds)
+  %%   accent    = pal3 (mid; legacy emphasis used by some helpers)
+  %%   softblue  = pal2 (light body fill for Example/Remark/Intro)
+  %%   paleblue  = pal1 (lightest, listing background)
+  \colorlet{paleblue}{oucpal1}%
+  \colorlet{softblue}{oucpal2}%
+  \colorlet{accent}{oucpal3}%
+  \colorlet{secondary}{oucpal4}%
+  \colorlet{primary}{oucpal5}%
+  \colorlet{spotcolor}{oucpal6}%
+  %% Private color names consumed by the lstlisting style.
+  \colorlet{lstfg}{inkdark}%
+  \colorlet{lstbg}{oucpal1}%
+  \colorlet{lstaccent}{oucpal6}%
+  \colorlet{lstborder}{oucpal6}%
+  \definecolor{linegray}{RGB}{226,232,240}%
+  %% Rebind heading colours to the active palette (pal6/pal5/pal4 chain).
+  %% Unconditional -- xcolor stores colorlets as \color@<name>, so guarding
+  %% with \@ifundefined{<name>} would always succeed (the macro \<name>
+  %% itself is never defined) and the rebind would be skipped.  Any user
+  %% override via \SetChapterColor / \SetSectionColor / \SetSubsectionColor
+  %% / \SetHeaderColor must therefore be RE-APPLIED after each
+  %% \OUCSetPalette call because this block resets them to the new palette.
+  \colorlet{bookpartcolor}{oucpal6}%
+  \colorlet{bookchaptercolor}{oucpal6}%
+  \colorlet{booksectioncolor}{oucpal5}%
+  \colorlet{booksubsectioncolor}{oucpal4}%
+  \colorlet{bookheadercolor}{oucpal6}%
+  %% Same idea, extended to every secondary UI surface that should track
+  %% the palette: code listings, table heads, theorem title bars, and
+  %% figure/table captions.  Each slot has a matching \SetXxxColor public
+  %% setter (defined just after the heading-colour setters); users who
+  %% override must call the setter AFTER \OUCSetPalette because this block
+  %% re-establishes the palette defaults on every palette switch.
+  \colorlet{bookkeywordcolor}{oucpal5}%       lstlisting keywords
+  \colorlet{bookcommentcolor}{oucpal4}%       lstlisting comments
+  \colorlet{bookstringcolor}{hiP}%            lstlisting strings (kept warm-red for legibility across palettes)
+  \colorlet{booklinenumcolor}{oucpal5}%       lstlisting line numbers
+  \colorlet{booklstbgcolor}{oucpal1}%         lstlisting background fill
+  \colorlet{booklstframecolor}{linegray}%     lstlisting frame rule
+  \colorlet{booktableheadcolor}{oucpal5}%     \booktableheadrow row fill
+  \colorlet{booktableheadtextcolor}{white}%   \booktableheadcell text colour
+  \colorlet{booktheoremtitlecolor}{oucpal5}%  theorem env title text (Pro/Le/Co/De/The/Proof)
+  \colorlet{booktheoremfillcolor}{oucpal2}%   Exa/Rmk theorem body fill
+  \colorlet{booktheoremtitlebarcolor}{oucpal4}% Exa/Rmk boxed-title fill
+  \colorlet{bookcaptioncolor}{oucpal5}%       caption body text (incl. margin figures)
+  \colorlet{bookcaptionlabelcolor}{oucpal6}%  "Figure N" / "Table N" label
+  \renewcommand{\OUCPaletteName}{#1}%
+  \renewcommand{\OUCSpotColorName}{Accent}%
+}
+
+\newcommand{\book@setspotcolor}[4]{%
+  \definecolor{spotcolor}{RGB}{#1,#2,#3}%
+  \renewcommand{\OUCSpotColorName}{#4}%
+}
+
+\newcommand{\booktableheadrow}{\rowcolor{booktableheadcolor}}
+\newcommand{\booktableheadcell}[1]{\textcolor{booktableheadtextcolor}{\bfseries #1}}
+
+%% lstlisting style now references the bookXxxcolor colorlets instead of
+%% raw palette / hard-coded colour names, so \OUCSetPalette propagates and
+%% \SetKeywordColor / \SetCommentColor / \SetStringColor / \SetLineNumColor
+%% / \SetListingBackgroundColor / \SetListingFrameColor can override.
+\lstdefinestyle{oucbooklisting}{%
+  backgroundcolor=\color{booklstbgcolor},%
+  basicstyle=\ttfamily\small,%
+  commentstyle=\itshape\color{bookcommentcolor},%
+  keywordstyle=\bfseries\color{bookkeywordcolor},%
+  stringstyle=\color{bookstringcolor},%
+  identifierstyle=\color{black},%
+  numberstyle=\scriptsize\color{booklinenumcolor},%
+  numbers=left,%
+  numbersep=0.8em,%
+  frame=single,%
+  rulecolor=\color{booklstframecolor},%
+  framerule=0.5pt,%
+  xleftmargin=1.25em,%
+  framexleftmargin=0.9em,%
+  framesep=0.6em,%
+  aboveskip=1.0\baselineskip,%
+  belowskip=1.0\baselineskip,%
+  breaklines=true,%
+  breakatwhitespace=false,%
+  showstringspaces=false,%
+  keepspaces=true,%
+  columns=fullflexible,%
+  upquote=true,%
+  tabsize=4,%
+  captionpos=b%
+}
+
+\lstset{style=oucbooklisting}
+
+\newcommand{\bookpaletteswatch}[1]{%
+  {\color{#1}\rule[-0.3ex]{2.6em}{2.4ex}}%
+}
+
+\newcommand{\bookpaletteguideentry}[8]{%
+  \definecolor{bookguideA}{RGB}{#3}%
+  \definecolor{bookguideB}{RGB}{#4}%
+  \definecolor{bookguideC}{RGB}{#5}%
+  \definecolor{bookguideD}{RGB}{#6}%
+  \definecolor{bookguideE}{RGB}{#7}%
+  \definecolor{bookguideF}{RGB}{#8}%
+  \noindent\textbf{#1}\enspace #2\par
+  \bookpaletteswatch{bookguideA}\hspace{0.35em}%
+  \bookpaletteswatch{bookguideB}\hspace{0.35em}%
+  \bookpaletteswatch{bookguideC}\hspace{0.35em}%
+  \bookpaletteswatch{bookguideD}\hspace{0.35em}%
+  \bookpaletteswatch{bookguideE}\hspace{0.35em}%
+  \bookpaletteswatch{bookguideF}\par\medskip
+}
+
+% Helpers for the Palette Introduction chapter.
+% \bookcardswatch{R,G,B} renders a 2.2em x 2ex coloured cell suitable for a
+% palette-card table.  The color is defined locally inside a group so the
+% temporary name does not leak across rows.
+\newcommand{\bookcardswatch}[1]{%
+  \begingroup
+  \definecolor{bookcardtmp}{RGB}{#1}%
+  {\color{bookcardtmp}\rule[-0.4ex]{2.2em}{2.0ex}}%
+  \endgroup
+}
+% \bookpalettecardhead{title} opens an unnumbered section that is still
+% recorded in the table of contents.
+\newcommand{\bookpalettecardhead}[1]{%
+  \section*{#1}%
+  \addcontentsline{toc}{section}{#1}%
+}
+% Fallback Unicode font for Greek / Cyrillic glyphs that mathpazo lacks.
+\IfFontExistsTF{Times New Roman}{%
+  \newfontfamily\bookforeignfont{Times New Roman}%
+}{%
+  \IfFontExistsTF{DejaVu Serif}{%
+    \newfontfamily\bookforeignfont{DejaVu Serif}%
+  }{%
+    \newfontfamily\bookforeignfont{TeX Gyre Termes}%
+  }%
+}
+\DeclareRobustCommand{\foreignname}[1]{{\bookforeignfont #1}}
+
+% \palettesubsec{title} prints an italic small-caps subsection label that
+% sits between paragraphs without polluting the table of contents.
+\newcommand{\palettesubsec}[1]{%
+  \par\medskip\noindent
+  {\normalfont\itshape\bfseries #1}\par\nopagebreak\smallskip
+}
+% \palettebullets ... \endpalettebullets : compact bulleted list for the
+% per-colour annotations under each palette card.
+\newenvironment{palettebullets}{%
+  \begin{list}{\textbullet}{%
+    \setlength{\leftmargin}{1.4em}%
+    \setlength{\labelsep}{0.5em}%
+    \setlength{\topsep}{0pt}%
+    \setlength{\itemsep}{1pt}%
+    \setlength{\parsep}{1pt}%
+  }%
+}{%
+  \end{list}%
+}
+
+\newcommand{\bookpaletteguideentries}{%
+  % ============================== ADD-A-PALETTE INTERFACE ② ==============================
+  % Each row of the "Palette Overview" chapter.  When contributing a new palette,
+  % append a new \bookpaletteguideentry{N}{Name}{r1,g1,b1}{...}{r6,g6,b6} line below.
+  % The six RGB triples MUST match exactly the corresponding \or branch in
+  % \OUCSetPalette (interface ①).  See README "参与贡献：添加你自己的配色".
+  % ========================================================================================
+  \bookpaletteguideentry{0}{OUC Default}{239,246,255}{219,234,254}{96,165,250}{37,99,235}{30,58,138}{30,41,59}%
+  \bookpaletteguideentry{1}{Brunneophobia}{238,211,180}{213,148,79}{213,148,79}{180,69,15}{86,67,53}{42,23,14}%
+  \bookpaletteguideentry{2}{Van Dyke}{236,194,188}{169,159,191}{169,159,191}{191,113,133}{68,60,94}{61,43,39}%
+  \bookpaletteguideentry{3}{Back in Black}{240,217,228}{193,160,172}{193,160,172}{128,108,121}{74,63,75}{22,19,21}%
+  \bookpaletteguideentry{4}{Belle of the Ball}{226,203,192}{206,171,150}{210,135,106}{229,74,57}{118,118,44}{53,77,4}%
+  \bookpaletteguideentry{5}{Pine Tree}{238,200,111}{222,166,32}{222,166,32}{177,120,133}{167,88,26}{43,47,34}%
+  \bookpaletteguideentry{6}{Provence Blue}{170,188,175}{137,156,154}{137,156,154}{110,124,139}{82,92,121}{53,66,94}%
+  \bookpaletteguideentry{7}{Fresco Blue}{166,224,244}{71,169,207}{71,169,207}{9,121,158}{4,75,102}{2,31,46}%
+  \bookpaletteguideentry{8}{Monet}{247,244,213}{211,150,140}{211,150,140}{131,153,88}{16,86,102}{10,51,35}%
+  \bookpaletteguideentry{9}{Narcissus}{221,213,200}{185,149,144}{185,149,144}{199,149,72}{190,108,26}{110,60,31}%
+  \bookpaletteguideentry{10}{Roman Empire}{236,232,225}{212,175,55}{74,110,65}{180,30,30}{120,20,40}{88,28,90}%
+  \bookpaletteguideentry{11}{Greece}{245,240,228}{212,175,55}{98,128,48}{188,82,38}{48,105,175}{90,42,92}%
+  \bookpaletteguideentry{12}{Kanagawa}{237,233,222}{208,224,238}{150,186,210}{26,78,132}{13,38,76}{29,25,35}%
+  \bookpaletteguideentry{13}{Starry Night}{240,208,68}{198,140,52}{105,155,200}{48,96,165}{22,50,30}{20,36,88}%
+  \bookpaletteguideentry{14}{A Thousand Li}{218,203,170}{110,165,195}{183,118,45}{96,148,110}{48,105,76}{35,78,112}%
+  \bookpaletteguideentry{15}{And Quiet Flows the Don}{142,120,70}{110,108,104}{118,86,52}{122,66,36}{52,70,90}{88,26,24}%
+  \bookpaletteguideentry{16}{Cyberpunk Edgerunners}{225,255,8}{10,238,100}{238,18,120}{205,20,35}{15,32,98}{14,8,28}%
+  \bookpaletteguideentry{17}{The Grand Budapest Hotel}{247,235,215}{168,178,196}{237,148,158}{176,136,60}{128,88,148}{143,52,65}%
+  \bookpaletteguideentry{18}{Renaissance Florence}{238,228,208}{190,148,52}{172,84,50}{54,80,60}{46,70,118}{85,54,34}%
+  \bookpaletteguideentry{19}{Soviet Avant-Garde}{225,218,205}{200,150,32}{118,114,108}{50,80,138}{196,28,28}{24,20,18}%
+  \bookpaletteguideentry{20}{Constantinople}{236,225,207}{195,150,42}{170,112,50}{50,76,58}{102,32,65}{30,52,88}%
+  \bookpaletteguideentry{21}{France}{232,222,205}{142,133,58}{122,126,132}{143,108,148}{180,32,40}{44,74,138}%
+  \bookpaletteguideentry{22}{Kyoto}{234,226,212}{204,184,178}{116,126,120}{110,84,64}{80,94,68}{34,40,66}%
+  \bookpaletteguideentry{23}{Siamese Dream}{238,226,208}{182,180,193}{198,158,65}{150,145,135}{188,105,40}{42,68,48}%
+}
+
+\newcommand{\OUCSetPalette}[1]{%
+  % ============================== ADD-A-PALETTE INTERFACE ① ==============================
+  % Runtime palette switch.  To add a new palette, append a new \or branch at
+  % the END of the \ifcase chain (just before the trailing \else fallback):
+  %   \or
+  %     \book@setpalettecolors{Your Palette Name}{R1,G1,B1}{R2,G2,B2}{R3,G3,B3}{R4,G4,B4}{R5,G5,B5}{R6,G6,B6}%
+  % Six RGB triples MUST run from LIGHTEST (pal1) to DARKEST (pal6).  After
+  % adding the branch here, mirror the same row in \bookpaletteguideentries
+  % (interface ②) and add a matching descriptive entry in gen_palette_intro.py
+  % (interface ③).  See README "参与贡献：添加你自己的配色".
+  % ========================================================================================
+  \ifcase#1\relax
+    \book@setpalettecolors{OUC Default}{239,246,255}{219,234,254}{96,165,250}{37,99,235}{30,58,138}{30,41,59}%
+  \or
+    \book@setpalettecolors{Brunneophobia}{238,211,180}{213,148,79}{213,148,79}{180,69,15}{86,67,53}{42,23,14}%
+  \or
+    \book@setpalettecolors{Van Dyke}{236,194,188}{169,159,191}{169,159,191}{191,113,133}{68,60,94}{61,43,39}%
+  \or
+    \book@setpalettecolors{Back in Black}{240,217,228}{193,160,172}{193,160,172}{128,108,121}{74,63,75}{22,19,21}%
+  \or
+    \book@setpalettecolors{Belle of the Ball}{226,203,192}{206,171,150}{210,135,106}{229,74,57}{118,118,44}{53,77,4}%
+  \or
+    \book@setpalettecolors{Pine Tree}{238,200,111}{222,166,32}{222,166,32}{177,120,133}{167,88,26}{43,47,34}%
+  \or
+    \book@setpalettecolors{Provence Blue}{170,188,175}{137,156,154}{137,156,154}{110,124,139}{82,92,121}{53,66,94}%
+  \or
+    \book@setpalettecolors{Fresco Blue}{166,224,244}{71,169,207}{71,169,207}{9,121,158}{4,75,102}{2,31,46}%
+  \or
+    \book@setpalettecolors{Monet}{247,244,213}{211,150,140}{211,150,140}{131,153,88}{16,86,102}{10,51,35}%
+  \or
+    \book@setpalettecolors{Narcissus}{221,213,200}{185,149,144}{185,149,144}{199,149,72}{190,108,26}{110,60,31}%
+  \or
+    \book@setpalettecolors{Roman Empire}{236,232,225}{212,175,55}{74,110,65}{180,30,30}{120,20,40}{88,28,90}%
+  \or
+    \book@setpalettecolors{Greece}{245,240,228}{212,175,55}{98,128,48}{188,82,38}{48,105,175}{90,42,92}%
+  \or
+    \book@setpalettecolors{Kanagawa}{237,233,222}{208,224,238}{150,186,210}{26,78,132}{13,38,76}{29,25,35}%
+  \or
+    \book@setpalettecolors{Starry Night}{240,208,68}{198,140,52}{105,155,200}{48,96,165}{22,50,30}{20,36,88}%
+  \or
+    \book@setpalettecolors{A Thousand Li}{218,203,170}{110,165,195}{183,118,45}{96,148,110}{48,105,76}{35,78,112}%
+  \or
+    \book@setpalettecolors{And Quiet Flows the Don}{142,120,70}{110,108,104}{118,86,52}{122,66,36}{52,70,90}{88,26,24}%
+  \or
+    \book@setpalettecolors{Cyberpunk Edgerunners}{225,255,8}{10,238,100}{238,18,120}{205,20,35}{15,32,98}{14,8,28}%
+  \or
+    \book@setpalettecolors{The Grand Budapest Hotel}{247,235,215}{168,178,196}{237,148,158}{176,136,60}{128,88,148}{143,52,65}%
+  \or
+    \book@setpalettecolors{Renaissance Florence}{238,228,208}{190,148,52}{172,84,50}{54,80,60}{46,70,118}{85,54,34}%
+  \or
+    \book@setpalettecolors{Soviet Avant-Garde}{225,218,205}{200,150,32}{118,114,108}{50,80,138}{196,28,28}{24,20,18}%
+  \or
+    \book@setpalettecolors{Constantinople}{236,225,207}{195,150,42}{170,112,50}{50,76,58}{102,32,65}{30,52,88}%
+  \or
+    \book@setpalettecolors{France}{232,222,205}{142,133,58}{122,126,132}{143,108,148}{180,32,40}{44,74,138}%
+  \or
+    \book@setpalettecolors{Kyoto}{234,226,212}{204,184,178}{116,126,120}{110,84,64}{80,94,68}{34,40,66}%
+    \book@setspotcolor{170}{50}{36}{Shu-hi}%
+  \or
+    \book@setpalettecolors{Siamese Dream}{238,226,208}{182,180,193}{198,158,65}{150,145,135}{188,105,40}{42,68,48}%
+  \else
+    \PackageWarning{Thomas-Tufte-bilingual-book}{Unknown palette index #1. Falling back to palette 0}%
+    \book@setpalettecolors{OUC Default}{239,246,255}{219,234,254}{96,165,250}{37,99,235}{30,58,138}{30,41,59}%
+  \fi
+}
+
+\OUCSetPalette{0}
+
+\newif\ifbook@chinese
+\book@chinesefalse
+
+% --------------------------------------------------------------------------
+% Heading & header colour interface
+% --------------------------------------------------------------------------
+% \SetHeadingColorDepth{N} : the top N heading levels (chapter=1, section=2,
+% subsection=3) keep their theme colour; deeper levels render in black.
+% Default 3 = all three coloured.  Set 0 for fully black headings.
+\def\book@headingcolordepth{3}
+\newcommand{\SetHeadingColorDepth}[1]{\def\book@headingcolordepth{#1}}
+
+% Per-slot colours (override via the public setters or \colorlet directly).
+% NB: these colour names deliberately avoid the `@' character because
+% \fancyhead and other expand-context macros tokenise their argument with
+% `@' as \other, which makes xcolor's lookup of e.g. `book@headercolor' fail
+% silently (the colour is "set" but the colorlet name cannot be resolved).
+% Default palette mapping (top-down, darker -> lighter):
+%   chapter    = oucpal6  (darkest, ink)
+%   section    = oucpal5  (== primary)
+%   subsection = oucpal4  (== secondary)
+%   header     = oucpal6
+% NB: bound by eager \colorlet -- \OUCSetPalette re-issues these so a
+% palette switch in the preamble carries the headings along.  Users who
+% want a custom slot must call \SetChapterColor / \SetSectionColor /
+% \SetSubsectionColor / \SetHeaderColor AFTER any \OUCSetPalette call.
+\colorlet{bookpartcolor}{oucpal6}
+\colorlet{bookchaptercolor}{oucpal6}
+\colorlet{booksectioncolor}{oucpal5}
+\colorlet{booksubsectioncolor}{oucpal4}
+\colorlet{bookheadercolor}{oucpal6}
+\newcommand{\SetPartColor}[1]{\colorlet{bookpartcolor}{#1}}
+\newcommand{\SetChapterColor}[1]{\colorlet{bookchaptercolor}{#1}}
+\newcommand{\SetSectionColor}[1]{\colorlet{booksectioncolor}{#1}}
+\newcommand{\SetSubsectionColor}[1]{\colorlet{booksubsectioncolor}{#1}}
+\newcommand{\SetHeaderColor}[1]{\colorlet{bookheadercolor}{#1}}
+
+% Unified theme-colour setters for every non-heading UI surface that
+% participates in the palette.  Each shadows the palette default that
+% \book@setpalettecolors installs on every \OUCSetPalette call -- so a
+% setter call MUST appear after the palette switch to stick.
+\newcommand{\SetKeywordColor}[1]{\colorlet{bookkeywordcolor}{#1}}
+\newcommand{\SetCommentColor}[1]{\colorlet{bookcommentcolor}{#1}}
+\newcommand{\SetStringColor}[1]{\colorlet{bookstringcolor}{#1}}
+\newcommand{\SetLineNumColor}[1]{\colorlet{booklinenumcolor}{#1}}
+\newcommand{\SetListingBackgroundColor}[1]{\colorlet{booklstbgcolor}{#1}}
+\newcommand{\SetListingFrameColor}[1]{\colorlet{booklstframecolor}{#1}}
+\newcommand{\SetTableHeadColor}[1]{\colorlet{booktableheadcolor}{#1}}
+\newcommand{\SetTableHeadTextColor}[1]{\colorlet{booktableheadtextcolor}{#1}}
+\newcommand{\SetTheoremTitleColor}[1]{\colorlet{booktheoremtitlecolor}{#1}}
+\newcommand{\SetTheoremFillColor}[1]{\colorlet{booktheoremfillcolor}{#1}}
+\newcommand{\SetTheoremTitleBarColor}[1]{\colorlet{booktheoremtitlebarcolor}{#1}}
+\newcommand{\SetCaptionColor}[1]{\colorlet{bookcaptioncolor}{#1}}
+\newcommand{\SetCaptionLabelColor}[1]{\colorlet{bookcaptionlabelcolor}{#1}}
+
+% Depth-gated colour applicators (no-op when level deeper than configured
+% depth, so the level renders in the surrounding black).
+\newcommand{\book@applychaptercolor}{\ifnum\book@headingcolordepth>0 \color{bookchaptercolor}\fi}
+\newcommand{\book@applysectioncolor}{\ifnum\book@headingcolordepth>1 \color{booksectioncolor}\fi}
+\newcommand{\book@applysubsectioncolor}{\ifnum\book@headingcolordepth>2 \color{booksubsectioncolor}\fi}
+
+% --------------------------------------------------------------------------
+% Letter-spaced small-caps / all-caps
+% --------------------------------------------------------------------------
+% Tufte's \allcaps / \smallcaps default to soul's \sodef-based letterspacing,
+% which in TeX Live 2025 conflicts with textcase's \MakeTextUppercase and
+% crashes even upstream sample-book.tex.  We override at \AtBeginDocument
+% with microtype's \textls (which is what upstream's own microtype branch
+% in tufte-common.def lines 715-718 uses); if microtype is not loaded we
+% fall back to identity (still gives \scshape small caps, just unspaced).
+\AtBeginDocument{%
+  \@ifpackageloaded{microtype}{%
+    \def\allcapsspacing##1{\textls[200]{##1}}%
+    \def\smallcapsspacing##1{\textls[50]{##1}}%
+  }{%
+    \let\allcapsspacing\@firstofone
+    \let\smallcapsspacing\@firstofone
+  }%
+  \@ifundefined{sotextsc}{}{\let\sotextsc\@firstofone}%
+}
+% Re-wrap upstream \smallcaps / \allcaps so the \scshape they introduce is
+% confined to an explicit group.  Upstream defines them as e.g.
+%   \smallcaps#1 -> \smallcapsspacing{\scshape\MakeTextLowercase{#1}}
+% When \smallcapsspacing collapses to \@firstofone (the xelatex-without-
+% microtype fallback above), the braces around \scshape\MakeTextLowercase{#1}
+% are consumed as the macro argument delimiter and \scshape leaks past
+% \smallcaps, turning subsequent body text into small caps.  An outer
+% {...} group on the redefinition fixes the leak and is a no-op on the
+% microtype path.  Done outside \AtBeginDocument because \smallcaps /
+% \allcaps are already defined by tufte-common.def before this sty loads.
+\renewcommand{\allcaps}[1]{{\allcapsspacing{\MakeTextUppercase{#1}}}}
+\renewcommand{\smallcaps}[1]{{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}}
+\newcommand{\bookallcaps}[1]{\ifbook@chinese #1\else \MakeTextUppercase{#1}\fi}
+\newcommand{\booksmallcaps}[1]{\ifbook@chinese #1\else {\scshape\MakeTextLowercase{#1}}\fi}
+
+% ============================================================
+% Font scheme switcher.
+%   \SetBookFontScheme{tufte}  -> VDQI/Tufte default font chain
+%       (Palatino Linotype / Helvetica Neue / Bera Mono), byte-identical to the
+%       choices made by the A_Tufte_Style_Book_with_VDQI_Title_and_Contents_Page
+%       sample (which inherits tufte-book defaults because bergamo.sty /
+%       chantill.sty are kept commented out there).
+%   \SetBookFontScheme{beamer} -> OUC-Haide-Beamer-Template font chain
+%       (RobotoSerif main+sans, Menlo mono, and national-2-condensed-bold as
+%       the display face bound to \ouctitledisplay), loaded from the local
+%       ./fonts/ directory which is a verbatim copy of beamer/fonts.
+% Math fonts are intentionally NOT set in either scheme: we keep the XeTeX +
+% amsmath default (Latin Modern Math) so equations look identical across
+% languages and font schemes, mirroring the VDQI sample which itself never
+% calls \setmathfont / unicode-math / mathpazo.
+% ============================================================
+\providecommand{\book@fontscheme}{tufte}
+
+\newcommand{\book@setlatinfonts@tufte}{%
+  % Strict Tufte-book typography:
+  %   Body  : Palatino / Pazo, loaded via [osf,sc]{mathpazo} at the top of
+  %           this sty.  We DO NOT call \setmainfont here -- mathpazo binds
+  %           \rmdefault to URW Palladio (ppl / pplj) through NFSS, giving
+  %           Type 1 Palatino with real old-style figures and real small
+  %           caps designed by URW.  Calling fontspec's \setmainfont would
+  %           override that with a separate OpenType face (TeX Gyre Pagella)
+  %           and break the visual match between text font and Pazo Math
+  %           symbols, so we deliberately leave \rmdefault alone.
+  %   Math  : Pazo Math, also from [osf,sc]{mathpazo}.
+  %   Sans  : Gill Sans -> Helvetica Neue -> Bera Sans -> Arial, Scale=0.86
+  %           to optically match the Palatino x-height (Tufte spec).  These
+  %           are set via fontspec because mathpazo does not touch sans.
+  %   Mono  : Bera Mono -> Source Code Pro -> Latin Modern Mono -> Courier
+  %           New, Scale=0.86.  Likewise set via fontspec.
+  \renewcommand{\ouctitledisplay}{}%
+  \IfFontExistsTF{Gill Sans}{%
+    \setsansfont[Scale=0.86]{Gill Sans}%
+  }{%
+    \IfFontExistsTF{Helvetica Neue}{%
+      \setsansfont[Scale=0.86]{Helvetica Neue}%
+    }{%
+      \IfFontExistsTF{Bera Sans}{%
+        \setsansfont[Scale=0.86]{Bera Sans}%
+      }{%
+        \IfFontExistsTF{TeX Gyre Heros}{%
+          \setsansfont[Renderer=Basic, Scale=0.86]{TeX Gyre Heros}%
+        }{%
+          \setsansfont[Scale=0.86]{Arial}}}}%
+  }%
+  \IfFontExistsTF{Bera Mono}{%
+    \setmonofont[Scale=0.86]{Bera Mono}%
+  }{%
+    \IfFontExistsTF{Source Code Pro}{%
+      \setmonofont[Scale=0.86]{Source Code Pro}%
+    }{%
+      \IfFontExistsTF{Latin Modern Mono}{%
+        \setmonofont[Scale=0.86]{Latin Modern Mono}%
+      }{%
+        \IfFontExistsTF{TeX Gyre Cursor}{%
+          \setmonofont[Renderer=Basic, Scale=0.86]{TeX Gyre Cursor}%
+        }{%
+          \setmonofont[Scale=0.86]{Courier New}}}}%
+  }%
+}
+
+\newcommand{\book@setlatinfonts@beamer}{%
+  \setmainfont{RobotoSerif-Regular.ttf}[Path={fonts/},
+    ItalicFont=RobotoSerif-Italic.ttf]%
+  \setsansfont{RobotoSerif-Regular.ttf}[Path={fonts/},
+    ItalicFont=RobotoSerif-Italic.ttf]%
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}}{%
+    \IfFontExistsTF{Source Code Pro}{\setmonofont{Source Code Pro}}{%
+      \IfFontExistsTF{Bera Mono}{\setmonofont{Bera Mono}}{%
+        \setmonofont{Courier New}}}}%
+  \@ifundefined{book@nationalfont}{%
+    \newfontface\book@nationalfont{national-2-condensed-bold.ttf}[Path={fonts/}]%
+  }{}%
+  \renewcommand{\ouctitledisplay}{\book@nationalfont}%
+}
+
+\newcommand{\book@setlatinfonts}{%
+  \ifdefstring{\book@fontscheme}{beamer}{%
+    \book@setlatinfonts@beamer
+  }{%
+    \book@setlatinfonts@tufte
+  }%
+}
+
+\newcommand{\SetBookFontScheme}[1]{%
+  \renewcommand{\book@fontscheme}{#1}%
+  \book@setlatinfonts
+}
+
+\newcommand{\book@setcjkfonts}{%
+  % Main CJK serif: prefer Songti SC (full Unicode CJK coverage; matches beamer template
+  % and fixes missing-character glyphs caused by partial KaiTi italic mapping).
+  % Use AutoFakeSlant for italic shape instead of the incomplete KaiTi italic font.
+  \IfFontExistsTF{Songti SC}{%
+    \setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{Songti SC}%
+  }{%
+    \IfFontExistsTF{Source Han Serif SC}{%
+      \setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{Source Han Serif SC}%
+    }{%
+      \IfFontExistsTF{Noto Serif CJK SC}{%
+        \setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{Noto Serif CJK SC}%
+      }{%
+        \IfFontExistsTF{SimSun}{%
+          \setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{SimSun}%
+        }{%
+          \setCJKmainfont[AutoFakeBold=2,AutoFakeSlant=0.2]{FandolSong-Regular}%
+        }%
+      }%
+    }%
+  }%
+  \IfFontExistsTF{Source Han Sans SC}{%
+    \setCJKsansfont[AutoFakeBold=2]{Source Han Sans SC}%
+  }{%
+    \IfFontExistsTF{Noto Sans CJK SC}{%
+      \setCJKsansfont[AutoFakeBold=2]{Noto Sans CJK SC}%
+    }{%
+      \IfFontExistsTF{PingFang SC}{%
+        \setCJKsansfont[AutoFakeBold=2]{PingFang SC}%
+      }{%
+        \IfFontExistsTF{Microsoft YaHei}{%
+          \setCJKsansfont[AutoFakeBold=2]{Microsoft YaHei}%
+        }{%
+          \IfFontExistsTF{SimHei}{%
+            \setCJKsansfont[AutoFakeBold=2]{SimHei}%
+          }{%
+            \setCJKsansfont[AutoFakeBold=2]{FandolHei-Regular}%
+          }%
+        }%
+      }%
+    }%
+  }%
+  \IfFontExistsTF{STFangsong}{%
+    \setCJKmonofont{STFangsong}%
+  }{%
+    \IfFontExistsTF{FangSong}{%
+      \setCJKmonofont{FangSong}%
+    }{%
+      \IfFontExistsTF{FandolFang-Regular}{%
+        \setCJKmonofont{FandolFang-Regular}%
+      }{%
+        \setCJKmonofont{Courier New}%
+      }%
+    }%
+  }%
+  % Local Kai family used by \textkai{...}. Try KaiTi -> STKaiti -> FandolKai.
+  \IfFontExistsTF{KaiTi}{%
+    \setCJKfamilyfont{bookkai}{KaiTi}%
+    \def\book@hasKai{1}%
+  }{%
+    \IfFontExistsTF{STKaiti}{%
+      \setCJKfamilyfont{bookkai}{STKaiti}%
+      \def\book@hasKai{1}%
+    }{%
+      \IfFontExistsTF{Kaiti SC}{%
+        \setCJKfamilyfont{bookkai}{Kaiti SC}%
+        \def\book@hasKai{1}%
+      }{%
+        \IfFontExistsTF{FandolKai-Regular}{%
+          \setCJKfamilyfont{bookkai}{FandolKai-Regular}%
+          \def\book@hasKai{1}%
+        }{%
+          \def\book@hasKai{0}%
+        }%
+      }%
+    }%
+  }%
+}
+
+\newcommand{\book@applynames}{%
+  \ifbook@chinese
+    \renewcommand{\contentsname}{目录}%
+    \renewcommand{\listfigurename}{插图目录}%
+    \renewcommand{\listtablename}{表格目录}%
+    \renewcommand{\figurename}{图}%
+    \renewcommand{\tablename}{表}%
+    \renewcommand{\partname}{部分}%
+    \renewcommand{\chaptername}{章}%
+    \renewcommand{\appendixname}{附录}%
+    \renewcommand{\indexname}{索引}%
+    \renewcommand{\bibname}{参考文献}%
+    \renewcommand{\proofname}{证明}%
+  \else
+    \renewcommand{\contentsname}{Contents}%
+    \renewcommand{\listfigurename}{List of Figures}%
+    \renewcommand{\listtablename}{List of Tables}%
+    \renewcommand{\figurename}{Figure}%
+    \renewcommand{\tablename}{Table}%
+    \renewcommand{\partname}{Part}%
+    \renewcommand{\chaptername}{Chapter}%
+    \renewcommand{\appendixname}{Appendix}%
+    \renewcommand{\indexname}{Index}%
+    \renewcommand{\bibname}{Bibliography}%
+    \renewcommand{\proofname}{Proof}%
+  \fi
+}
+
+\newcommand{\SetBookLanguage}[1]{%
+  \ifdefstrequal{#1}{chinese}{\book@chinesetrue}{\book@chinesefalse}%
+  \book@setlatinfonts
+  \book@setcjkfonts
+  \book@applynames
+  \ifbook@chinese
+    \XeTeXlinebreaklocale "zh"
+    \XeTeXlinebreakskip = 0pt plus 1pt
+  \fi
+}
+
+\SetBookLanguage{english}
+
+\renewcommandx{\cite}[3][1={0pt},2={}]{\sidenote[][#1]{\fullcite[#2]{#3}}}
+
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+\newcommand{\vdqi}{\textit{VDQI}\xspace}
+\newcommand{\ei}{\textit{EI}\xspace}
+\newcommand{\ve}{\textit{VE}\xspace}
+\newcommand{\be}{\textit{BE}\xspace}
+\newcommand{\VDQI}{\textit{The Visual Display of Quantitative Information}\xspace}
+\newcommand{\EI}{\textit{Envisioning Information}\xspace}
+\newcommand{\VE}{\textit{Visual Explanations}\xspace}
+\newcommand{\BE}{\textit{Beautiful Evidence}\xspace}
+
+\newcommand{\TL}{Tufte-\LaTeX\xspace}
+
+\newcommand{\monthyear}{%
+  \ifbook@chinese
+    \number\year 年\number\month 月%
+  \else
+    \ifcase\month\or January\or February\or March\or April\or May\or June\or
+    July\or August\or September\or October\or November\or
+    December\fi\space\number\year%
+  \fi
+}
+
+\newcommand{\openepigraph}[2]{%
+  \begin{fullwidth}
+  \sffamily\large
+  \begin{doublespace}
+  \noindent\bookallcaps{#1}\\
+  \noindent\bookallcaps{#2}%
+  \end{doublespace}
+  \end{fullwidth}
+}
+
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+\newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
+
+\newcommand{\hlred}[1]{\textcolor{primary}{#1}}
+\newcommand{\hangleft}[1]{\makebox[0pt][r]{#1}}
+\newcommand{\hairsp}{\hspace{1pt}}
+\newcommand{\hquad}{\hskip0.5em\relax}
+\newcommand{\TODO}{\textcolor{accent}{\bf TODO!}\xspace}
+\newcommand{\ie}{\textit{i.\hairsp{}e.}\xspace}
+\newcommand{\eg}{\textit{e.\hairsp{}g.}\xspace}
+\newcommand{\na}{\quad--}
+\providecommand{\XeLaTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\LaTeX}
+\newcommand{\tXeLaTeX}{\XeLaTeX\index{XeLaTeX@\protect\XeLaTeX}}
+\newcommand{\tuftebs}{\symbol{'134}}
+\newcommand{\doccmdnoindex}[2][]{\texttt{\tuftebs#2}}
+\newcommand{\doccmddef}[2][]{%
+  \hlred{\texttt{\tuftebs#2}}\label{cmd:#2}%
+  \ifthenelse{\isempty{#1}}%
+    {\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}}%
+    {\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}%
+}
+\newcommand{\doccmd}[2][]{%
+  \texttt{\tuftebs#2}%
+  \ifthenelse{\isempty{#1}}%
+    {\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}}%
+    {\index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}%
+}
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}
+\newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}
+\newcommand{\docenv}[1]{\texttt{#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}
+\newcommand{\docenvdef}[1]{\hlred{\texttt{#1}}\label{env:#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}
+\newcommand{\docpkg}[1]{\texttt{#1}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}}
+\newcommand{\doccls}[1]{\texttt{#1}}
+\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}
+\newcommand{\docclsoptdef}[1]{\hlred{\texttt{#1}}\label{clsopt:#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}
+\newcommand{\docmsg}[2]{\bigskip\begin{fullwidth}\noindent\ttfamily#1\end{fullwidth}\medskip\par\noindent#2}
+\newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
+\newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
+
+\newcommand{\booktheoremname}{\ifbook@chinese 定理\else Theorem\fi}
+\newcommand{\booklemmaname}{\ifbook@chinese 引理\else Lemma\fi}
+\newcommand{\bookcorollaryname}{\ifbook@chinese 推论\else Corollary\fi}
+\newcommand{\bookpropositionname}{\ifbook@chinese 命题\else Proposition\fi}
+\newcommand{\bookdefinitionname}{\ifbook@chinese 定义\else Definition\fi}
+\newcommand{\bookexamplename}{\ifbook@chinese 例\else Example\fi}
+\newcommand{\bookremarkname}{\ifbook@chinese 注\else Remark\fi}
+\newcommand{\bookproofname}{\ifbook@chinese 证明\else Proof\fi}
+\newcommand{\bookboxedname}{\ifbook@chinese 注记\else Note\fi}
+\newcommand{\bookintroname}{\ifbook@chinese 引言\else Intro\fi}
+
+% ============================================================
+% Beamer-parity theorem-like environments (tcolorbox-based).
+% Definitions below are byte-identical copies from the companion
+% oucsmartbeamer.sty so that book and beamer share the same visual
+% language. Only differences:
+%   - The names are taken from \book...name macros (which switch
+%     between English and Chinese based on \ifbook@chinese).
+%   - The first environment is anchored on a chapter-resetting
+%     counter via [number within=chapter] (beamer numbers within
+%     the deck, books number within chapters).
+% Palette slot semantics (matching beamer exactly):
+%   pal1=paleblue=lstlisting bg;  pal2=softblue=Exa/Rmk/Intro body;
+%   pal4=secondary=Exa/Rmk/Intro title fill;  pal5=primary=emphasis;
+%   pal3=accent;  pal6=darkest swatch.
+% ============================================================
+%% Every tcbtheorem definition now references bookXxxcolor colorlets in
+%% place of raw `primary` / `oucpal2` / `oucpal4`.  tcolorbox resolves
+%% these at render time so palette switches AND \SetTheoremTitleColor /
+%% \SetTheoremFillColor / \SetTheoremTitleBarColor overrides both work.
+\newtcbtheorem[number within=chapter]{The}{\booktheoremname}{%
+    colback=white,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=2.5mm},
+    boxed title style={colback=white!50,colframe=white},
+    before=\vspace{\baselineskip}}{the}
+\newtcbtheorem[use counter from=The]{Exa}{\bookexamplename}{%
+    colback=booktheoremfillcolor,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=1mm},
+    boxed title style={colback=booktheoremtitlebarcolor,colframe=booktheoremtitlebarcolor,left=-0.025cm,right=.025cm,bottom=.025cm},
+    before=\vspace{\baselineskip}}{exa}
+\newtcbtheorem[use counter from=The]{Rmk}{\bookremarkname}{%
+    colback=booktheoremfillcolor,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=2.5mm},
+    boxed title style={colback=booktheoremtitlebarcolor,colframe=booktheoremtitlebarcolor,left=-0.025cm,right=.025cm,bottom=.025cm},
+    before=\vspace{\baselineskip}}{rmk}
+\newtcbtheorem[use counter from=The]{Pro}{\bookpropositionname}{%
+    colback=white,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=2.5mm},
+    boxed title style={colback=white!50,colframe=white},
+    before=\vspace{\baselineskip}}{pro}
+\newtcbtheorem[use counter from=The]{Le}{\booklemmaname}{%
+    colback=white,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=2.5mm},
+    boxed title style={colback=white!50,colframe=white},
+    before=\vspace{\baselineskip}}{le}
+\newtcbtheorem[use counter from=The]{Co}{\bookcorollaryname}{%
+    colback=white,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=2.5mm},
+    boxed title style={colback=white!50,colframe=white},
+    before=\vspace{\baselineskip}}{co}
+\newtcbtheorem[use counter from=The]{De}{\bookdefinitionname}{%
+    colback=white,fonttitle=\ouctitledisplay\bfseries\color{booktheoremtitlecolor},breakable,enhanced jigsaw,
+    boxrule=0pt,left=4mm,right=2mm,top=3.5mm,bottom=0mm,
+    attach boxed title to top left={yshift=-2.5mm, xshift=2.5mm},
+    boxed title style={colback=white!50,colframe=white},
+    before=\vspace{\baselineskip}}{de}
+
+%% Proof: hand-written inline form (matches beamer byte-for-byte).
+%%   headfont = \ouctitledisplay\bfseries
+%%   postheadspace = .5cm   qed = $\square$
+\providecommand{\OUCQEDsymbol}{\ensuremath{\square}}
+\newenvironment{OUCProof}{%
+    \par\addvspace{8pt}%
+    \noindent{\ouctitledisplay\bfseries\bookproofname}{\;}\hspace{.5cm}%
+    \normalfont\ignorespaces
+}{%
+    \unskip\nobreak\hfill\OUCQEDsymbol\par\addvspace{8pt}%
+}
+\let\Proof\OUCProof
+\let\endProof\endOUCProof
+
+%% Boxed: rounded softblue container with white border (beamer parity).
+\newtcolorbox{OUCBoxed}{%
+    enhanced,breakable,
+    colback=oucpal2,colframe=white,
+    boxrule=0pt,arc=15pt,outer arc=15pt,
+    left=.2cm,right=.2cm,top=15pt,bottom=5pt,
+    before skip=-5pt,after skip=-5pt,
+    fontupper=\color{black}\normalfont
+}
+\let\Boxed\OUCBoxed
+\let\endBoxed\endOUCBoxed
+
+%% Intro / RightIntro: gradient corner title (byte-identical to beamer).
+\newtcolorbox{Intro}[2][]{%
+    enhanced,before skip=2mm,after skip=2mm,
+    colback=oucpal2,colframe=white,boxrule=0mm,
+    attach boxed title to top left={xshift=.5cm,yshift*=1mm-\tcboxedtitleheight},
+    varwidth boxed title*=-2cm,
+    boxed title style={colback=oucpal4,frame code={%
+        \path[fill=tcbcolback!95!black]
+            ([yshift=-1mm,xshift=-1mm]frame.north west)
+            arc[start angle=0,end angle=180,radius=1mm]
+            ([yshift=-1mm,xshift=1mm]frame.north east)
+            arc[start angle=180,end angle=0,radius=1mm];
+        \path[top color=tcbcolback,middle color=tcbcolback!80,
+              bottom color=tcbcolback!40!white]
+            ([xshift=-2mm]frame.north west) --
+            ([xshift=2mm]frame.north east)
+            [rounded corners=1mm] -- ([xshift=1mm,yshift=-1mm]frame.north east)
+            -- (frame.south east) -- (frame.south west)
+            -- ([xshift=-1mm,yshift=-1mm]frame.north west)
+            [sharp corners]-- cycle;},
+        interior engine=empty},
+    fonttitle={\ouctitledisplay\bfseries\color{primary}},title={#2},#1}
+\newtcolorbox{RightIntro}[2][]{%
+    enhanced,before skip=2mm,after skip=2mm,
+    colback=oucpal2,colframe=white,boxrule=0mm,
+    attach boxed title to top right={xshift=-.5cm,yshift*=1mm-\tcboxedtitleheight},
+    varwidth boxed title*=2cm,
+    boxed title style={colback=oucpal4,frame code={%
+        \path[fill=tcbcolback!95!black]
+            ([yshift=-1mm,xshift=-1mm]frame.north west)
+            arc[start angle=0,end angle=180,radius=1mm]
+            ([yshift=-1mm,xshift=1mm]frame.north east)
+            arc[start angle=180,end angle=0,radius=1mm];
+        \path[top color=tcbcolback,middle color=tcbcolback!90,
+              bottom color=tcbcolback!40!white]
+            ([xshift=-2mm]frame.north west) --
+            ([xshift=2mm]frame.north east)
+            [rounded corners=1mm] -- ([xshift=1mm,yshift=-1mm]frame.north east)
+            -- (frame.south east) -- (frame.south west)
+            -- ([xshift=-1mm,yshift=-1mm]frame.north west)
+            [sharp corners]-- cycle;},
+        interior engine=empty},
+    fonttitle={\ouctitledisplay\bfseries\color{primary}},title={#2},#1}
+
+%% Auxiliary boxes (byte-identical to beamer):
+%%   infobox = paleblue body, secondary frame, primary west bar, shadow
+%%   warnbox = red tint, hiP frame & west bar
+%%   resultbox = goodG tint, goodG frame & west bar
+%%   goalbox = primary fill, white text, shadow
+\newtcolorbox{infobox}[1][]{
+    enhanced,colback=paleblue,colframe=secondary,
+    arc=3pt,boxrule=0.4pt,
+    left=10pt,right=10pt,top=6pt,bottom=6pt,
+    fontupper=\footnotesize,
+    borderline west={2.5pt}{0pt}{primary},
+    drop fuzzy shadow=primary!25,
+    #1
+}
+\newtcolorbox{warnbox}[1][]{
+    enhanced,colback=red!4,colframe=hiP,
+    arc=3pt,boxrule=0.4pt,
+    left=10pt,right=10pt,top=6pt,bottom=6pt,
+    fontupper=\footnotesize,
+    borderline west={2.5pt}{0pt}{hiP},
+    #1
+}
+\newtcolorbox{resultbox}[1][]{
+    enhanced,colback=goodG!6,colframe=goodG,
+    arc=3pt,boxrule=0.4pt,
+    left=10pt,right=10pt,top=6pt,bottom=6pt,
+    fontupper=\footnotesize,
+    borderline west={2.5pt}{0pt}{goodG},
+    #1
+}
+\newtcolorbox{goalbox}[1][]{
+    enhanced,colback=primary,colframe=primary,
+    arc=3pt,boxrule=0pt,
+    left=8pt,right=8pt,top=5pt,bottom=5pt,
+    fontupper=\scriptsize\color{white},
+    drop fuzzy shadow=primary!30,
+    #1
+}
+
+%% Inline helpers (byte-identical to beamer).
+\newcommand{\UnderlineBox}[1]{%
+    \begin{tcolorbox}[colback=white,colframe=white,right=10mm,top=0mm,left=2.5mm]
+    {#1}\\[-5pt]
+    \tikz{\draw (0,0)--(\linewidth-1cm,0); \draw (0,.05)--(\linewidth-1cm,.05);}
+    \end{tcolorbox}}
+\newcommand{\Quote}[2]{\epigraph{\textit{#1}}{#2}}
+\newcommand{\Minipage}[4]{\noindent%
+    \begin{minipage}[t][][b]{#1\textwidth}{#2}\end{minipage}\hfill
+    \begin{minipage}[t][][b]{#3\textwidth}{#4}\end{minipage}\noindent}
+\BeforeBeginEnvironment{wrapfigure}{\setlength{\intextsep}{2pt}}
+\newcommand{\EvOdd}[3]{%
+    \noindent\begin{wrapfigure}[#1]{r}{#2}#3\end{wrapfigure}}
+\providecommand{\Eq}[1]{\begin{align*}#1\end{align*}}
+\providecommand{\EqL}[2]{\begin{align}\label{#2}#1\end{align}}
+
+% \textkai{...} : local Kai-style Chinese rendering. We swap implementation via
+% \let at \AtBeginDocument time (avoids #-doubling pitfalls of \renewcommand
+% inside hook tokens).
+\newcommand{\book@textkai@plain}[1]{{#1}}
+\newcommand{\book@textkai@withfont}[1]{{\CJKfamily{bookkai}#1}}
+\let\textkai\book@textkai@plain
+\AtBeginDocument{%
+  \@ifundefined{book@hasKai}{}{%
+    \ifnum\book@hasKai=1\relax
+      \let\textkai\book@textkai@withfont
+    \fi%
+  }%
+}
+
+\makeatletter
+% Apply the depth-gated chapter colour to \@makechapterhead /
+% \@makeschapterhead too, so \chapter* and any non-titlesec code path still
+% honours \SetHeadingColorDepth / \SetChapterColor.
+\pretocmd{\@makechapterhead}{\book@applychaptercolor}{}{}
+\pretocmd{\@makeschapterhead}{\book@applychaptercolor}{}{}
+% Tufte's \allcaps wraps \MakeTextUppercase inside soul's \sodef-letterspaced
+% \allcapsspacing macro.  In TeX Live 2025 this combination breaks (textcase's
+% \MakeTextUppercase rejects soul's tokenised argument with "extra }"); this
+% even bites upstream's own sample-book.tex.  Define a soul-free fallback used
+% inside \maketitlepage; outside the title page \allcaps continues to work
+% for short literal strings (sidenote epigraphs etc).
+\newcommand{\book@plainallcaps}[1]{\MakeTextUppercase{#1}}
+
+\renewcommand{\maketitlepage}{%
+  % Structure follows tufte-latex-master/tufte-common.def's \maketitlepage:
+  % sffamily, fullwidth, three blocks at 18/20, 36/40, 14/16.  We use
+  % \book@plainallcaps (no soul letterspacing) to dodge the textcase/soul
+  % incompatibility documented above.  Colors swap upstream's darkgray for
+  % OUC palette slots.  In Chinese mode we skip the uppercase pass entirely
+  % so CJK glyphs render unchanged.
+  \cleardoublepage%
+  {%
+    \sffamily%
+    \begin{fullwidth}%
+      \fontsize{18}{20}\selectfont\par\noindent
+      \textcolor{primary}{\ifbook@chinese\thanklessauthor\else\book@plainallcaps{\thanklessauthor}\fi}%
+      \vspace{11.5pc}%
+      \fontsize{36}{40}\selectfont\par\noindent
+      \textcolor{oucpal6}{\ifbook@chinese\thanklesstitle\else\book@plainallcaps{\thanklesstitle}\fi}%
+      \vfill%
+      \fontsize{14}{16}\selectfont\par\noindent
+      \textcolor{primary}{\ifbook@chinese\thanklesspublisher\else\book@plainallcaps{\thanklesspublisher}\fi}%
+    \end{fullwidth}%
+  }%
+  \thispagestyle{empty}%
+  \clearpage%
+}
+\newcommand{\book@parttoclabel}{\textcolor{primary}{\ifbook@chinese 第~\thecontentslabel~部分\else \bookallcaps{Part~\thecontentslabel}\fi}}
+\newcommand{\book@chaptertocwithlabel}{\ifbook@chinese \textcolor{primary}{第~\thecontentslabel~章}\quad\else \textcolor{primary}{\contentslabel{2em}}\fi}
+\newcommand{\book@chaptertocnolabel}{\hspace{0em}}
+
+\titlecontents{part}%
+    [0pt]%
+  {\addvspace{0.25\baselineskip}\color{oucpal6}}%
+    {\book@parttoclabel}%
+    {\book@parttoclabel}%
+  {\hfill\color{primary}\thecontentspage}%
+    [\vspace*{0.5\baselineskip}]%
+
+\titlecontents{chapter}%
+    [4em]%
+  {\color{oucpal6}}%
+    {\book@chaptertocwithlabel}%
+    {\book@chaptertocnolabel}%
+  {\qquad\color{primary}\thecontentspage}%
+    [\vspace*{0.5\baselineskip}]%
+
+% Restore tufte-latex-master's chapter / section / subsection font spec
+% (\huge\rmfamily\itshape, \Large\itshape, \large\itshape).  Colours go
+% through the depth-gated applicators so users can dial back via
+% \SetHeadingColorDepth{N}.  We use \titleformat directly instead of
+% sectsty's \sectionfont, because the latter REPLACES the default font
+% selection and silently drops tufte's \itshape, which gave us the
+% bold-upright chapter heads we originally complained about.
+\titleformat{\part}%
+  [display]
+  {\centering\color{bookpartcolor}\normalfont\huge\itshape}% format applied to label+text
+  {\partname\ \thepart}% label
+  {1em}% horizontal separation
+  {\Huge\rmfamily\itshape}% before title body
+\titleformat{\chapter}%
+  [display]
+  {\relax}% format applied to label+text
+  {\book@applychaptercolor\itshape\huge\thechapter}% label
+  {0pt}% horizontal separation
+  {\book@applychaptercolor\huge\rmfamily\itshape}% before title body
+\titleformat{\section}%
+  [hang]
+  {\normalfont\Large\itshape\book@applysectioncolor}%
+  {\thesection}%
+  {1em}%
+  {}
+\titleformat{\subsection}%
+  [hang]
+  {\normalfont\large\itshape\book@applysubsectioncolor}%
+  {\thesubsection}%
+  {1em}%
+  {}
+
+% Override tufte-book.cls's headers to honour \SetHeaderColor.  Structure
+% mirrors tufte-book.cls lines 51-58 (book title on verso, chapter title on
+% recto) but wraps each in \textcolor{bookheadercolor} so headers can be
+% retinted independently of heading colours.  \smallcaps now renders as
+% true letter-spaced small caps because our \smallcapsspacing override
+% above routes through microtype's \textls.
+%
+% Two complications:
+%   (1) tufte-book.cls's \mainmatter calls \fancyhf{} + \fancyhead[...]
+%       directly, which clobbers the CURRENT pagestyle's heads -- not a
+%       named pagestyle, so we can't shield ourselves with \fancypagestyle.
+%       We patch \mainmatter at \AtBeginDocument so the colour-aware heads
+%       are reapplied after its body runs.
+%   (2) Likewise for \frontmatter (which sets a bare \fancyhead[..]{\thepage}).
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\newcommand{\book@apply@headers}{%
+  \fancyhf{}%
+  \fancyhead[LE]{\rmfamily\textcolor{bookheadercolor}{\thepage\quad\smallcaps{\newlinetospace{\plaintitle}}}}%
+  \fancyhead[RO]{\rmfamily\textcolor{bookheadercolor}{\smallcaps{\newlinetospace{\leftmark}}\quad\thepage}}%
+}
+\AtBeginDocument{%
+  \book@apply@headers%
+  \@ifundefined{mainmatter}{}{%
+    \let\book@orig@mainmatter\mainmatter%
+    \def\mainmatter{\book@orig@mainmatter\book@apply@headers}%
+  }%
+}
+
+%% Captions (including margin figures / tables under tufte-book) route
+%% through bookcaptioncolor and bookcaptionlabelcolor so \OUCSetPalette
+%% switches them and \SetCaptionColor / \SetCaptionLabelColor override.
+\setcaptionfont{\color{bookcaptioncolor}}
+\renewcommand{\fnum@figure}{\textcolor{bookcaptionlabelcolor}{\figurename~\thefigure}}
+\renewcommand{\fnum@table}{\textcolor{bookcaptionlabelcolor}{\tablename~\thetable}}
+\makeatother

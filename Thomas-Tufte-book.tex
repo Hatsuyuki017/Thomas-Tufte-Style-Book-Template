@@ -1,0 +1,143 @@
+% Root bilingual entry point for the Tufte-style book sample.
+% Change english to chinese to switch the font mapping and localized labels.
+% Compile this document with XeLaTeX.
+\documentclass[nofonts,nohyper,nobib]{tufte-book}
+
+% Allowed values: english, chinese.
+\newcommand{\BookLanguage}{english}
+
+\usepackage{Thomas-Tufte-bilingual-book}
+% Font scheme:
+%   tufte  = A_Tufte_Style_Book_with_VDQI font chain (Palatino + Helvetica + Bera Mono).
+%   beamer = OUC-Haide-Beamer-Template font chain (RobotoSerif + Menlo + national-2),
+%            loaded from ./fonts/ (a copy of OUC-Haide-Beamer-Template-main/fonts).
+\SetBookFontScheme{tufte}
+% \SetBookFontScheme{beamer}
+\SetBookLanguage{\BookLanguage}
+\OUCSetPalette{0} % 0..23, extended with the discussed thematic palettes.
+% Use \textcolor{spotcolor}{...} for theme-specific point accents such as Kyoto red.
+
+%%
+% Book metadata
+\title{Thomas Shang's Tufte-Style Book Template}
+\date{The edition number}
+\author[Thomas Shang \& Tufte-LaTeX Developers]{Thomas Shang \& Tufte-LaTeX Developers}
+\publisher{Publisher of This Book}
+
+\begin{document}
+
+% Front matter
+\frontmatter
+
+% r.1 blank page
+% \blankpage
+
+% v.2 epigraphs
+% \newpage\thispagestyle{empty}
+% \openepigraph{%
+% The public is more familiar with bad design than good design.
+% It is, in effect, conditioned to prefer bad design, 
+% because that is what it lives with. 
+% The new becomes threatening, the old reassuring.
+% }{Paul Rand%, {\itshape Design, Form, and Chaos}
+% }
+% \vfill
+% \openepigraph{%
+% A designer knows that he has achieved perfection 
+% not when there is nothing left to add, 
+% but when there is nothing left to take away.
+% }{Antoine de Saint-Exup\'{e}ry}
+% \vfill
+% \openepigraph{%
+% \ldots the designer of a new system must not only be the implementor and the first 
+% large-scale user; the designer should also write the first user manual\ldots 
+% If I had not participated fully in all these activities, 
+% literally hundreds of improvements would never have been made, 
+% because I would never have thought of them or perceived 
+% why they were important.
+% }{Donald E. Knuth}
+
+
+% r.3 full title page
+\maketitle
+
+
+% v.4 copyright page
+\newpage
+\begin{fullwidth}
+~\vfill
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+Copyright \copyright\ \the\year\ \thanklessauthor
+
+\par Published by \thanklesspublisher
+
+\par tufte-latex.googlecode.com
+
+\par Licensed under the Apache License, Version 2.0 (the ``License''); you may not
+use this file except in compliance with the License. You may obtain a copy
+of the License at \url{http://www.apache.org/licenses/LICENSE-2.0}. Unless
+required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an ``AS IS'' BASIS, WITHOUT
+License for the specific language governing permissions and limitations
+under the License.\index{license}
+
+\par\textit{First printing, \monthyear}
+
+\par\medskip
+This template was carefully polished and redesigned by Thomas Shang on the
+basis of the upstream Tufte-style book template, refining the typography,
+palette system, and bilingual workflow into the present form. Project home:
+\url{https://github.com/Hatsuyuki017}.
+\end{fullwidth}
+
+% r.5 contents
+\tableofcontents
+\input{chapter-en/01-palette-name}
+
+\listoffigures
+
+\listoftables
+
+% r.7 dedication
+\cleardoublepage
+~\vfill
+\begin{doublespace}
+\noindent\fontsize{18}{22}\selectfont\itshape
+\nohyphenation
+Dedicated to those who appreciate \LaTeX{} 
+and the work of \mbox{Edward R.~Tufte} 
+and \mbox{Donald E.~Knuth}.
+\end{doublespace}
+\vfill
+\vfill
+\input{chapter-en/02-introduction}
+\input{chapter-en/03-palette-guide}
+\mainmatter
+
+\part{Template Reference}
+\input{chapter-en/04-showcase-of-boxed-environments}
+
+\part{The First Part}
+\input{chapter-en/05-the-design-of-tufte-s-books}
+\input{chapter-en/06-on-the-use-of-the-tufte-book}
+\input{chapter-en/07-customizing}
+\input{chapter-en/08-compatibility-issues}
+\input{chapter-en/09-troubleshooting-and-support}
+
+
+
+
+
+
+
+\backmatter
+\input{chapter-en/10-acknowledgements}
+
+
+\printindex
+
+\input{chapter-en/palette-intro-en}
+
+\end{document}
