@@ -1,5 +1,7 @@
 # Thomas Shang's Tufte-Style Book Template
 
+<a id="english"></a>
+
 A bilingual Tufte-style XeLaTeX book template — *English first, 中文版在后*.
 This repository ships one English entry file, one Chinese entry file, one shared
 style file, a palette-introduction generator script, and 24 swappable color
@@ -17,6 +19,8 @@ palettes. The template supports:
 > Shared style: `Thomas-Tufte-bilingual-book.sty`
 > Preview PDFs: `Thomas-Tufte-book.pdf` / `Thomas-Tufte-book-zh.pdf`
 
+Quick Navigation: [English](#english) | [En- Appendix](#en-appendix) | [中文版](#zh) | [中文版-附录](#zh-appendix)
+
 ---
 
 ## Contents (English)
@@ -27,13 +31,15 @@ palettes. The template supports:
 4. [How to Compile](#how-to-compile)
 5. [Core Interfaces](#core-interfaces)
 6. [Palette Overview](#palette-overview)
-7. [Contributing — Add Your Own Palette](#contributing--add-your-own-palette)
-8. [Acknowledgements](#acknowledgements)
+7. [Complete Palette Quick Reference](#complete-palette-quick-reference)
+8. [Appendix: Full Palette Descriptions](#appendix-full-palette-descriptions)
+9. [Contributing — Add Your Own Palette](#contributing--add-your-own-palette)
+10. [Acknowledgements](#acknowledgements)
 
-For the full bilingual palette quick-reference table and the detailed
-philosophy-driven palette catalogue, scroll down to the Chinese section
-[完整色版速查](#完整色版速查) and [附录：全部配色方案详述](#附录全部配色方案详述);
-each entry already carries bilingual color names.
+For a reader who only wants the palette material, jump directly to the
+[English appendix](#en-appendix) or the [Chinese appendix](#zh-appendix).
+Both halves now include the complete quick-reference strips and the long-form
+palette catalogue.
 
 ---
 
@@ -209,16 +215,1144 @@ wired into the palette system; no extra configuration needed.
 ## Palette Overview
 
 There are 24 palettes (indices `0..23`). Each palette exposes six swatches
-ordered light → dark; `primary = pal5`, `accent = pal6`. A quick-reference
-table (with both English and Chinese palette names) is provided in the
-[完整色版速查](#完整色版速查) section of the Chinese half — the palette names
-and RGB triples are language-neutral and read identically to English readers.
+ordered light → dark; `primary = pal5`, `accent = pal6`. The full six-swatch
+reference and the long-form palette appendix are reproduced below in English,
+so readers no longer need to switch languages just to inspect the full palette
+catalogue.
 
-The 14 thematic palettes (indices 10–23) each ship with a short
-"color philosophy" paragraph in Chinese; these are intentionally cultural and
-left in their original language. The pre-built PDFs include English
-equivalents inside the *Palette Catalogue* chapter, which is auto-generated
-from `gen_palette_intro.py`.
+<a id="en-appendix"></a>
+
+## Complete Palette Quick Reference
+
+The complete six-swatch strips for all 24 palettes are listed below. Each
+palette runs from `pal1` to `pal6`, light → dark. Kyoto additionally exposes
+`spotcolor = rgb(170,50,36)`.
+
+### 0. OUC Default
+
+```text
+OUC Default A   rgb(239, 246, 255)
+OUC Default B   rgb(219, 234, 254)
+OUC Default C   rgb( 96, 165, 250)
+OUC Default D   rgb( 37,  99, 235)
+OUC Default E   rgb( 30,  58, 138)
+OUC Default F   rgb( 30,  41,  59)
+```
+
+### 1. Brunneophobia
+
+```text
+Brunneophobia A rgb(238, 211, 180)
+Brunneophobia B rgb(213, 148,  79)
+Brunneophobia C rgb(213, 148,  79)
+Brunneophobia D rgb(180,  69,  15)
+Brunneophobia E rgb( 86,  67,  53)
+Brunneophobia F rgb( 42,  23,  14)
+```
+
+### 2. Van Dyke
+
+```text
+Van Dyke A       rgb(236, 194, 188)
+Van Dyke B       rgb(169, 159, 191)
+Van Dyke C       rgb(169, 159, 191)
+Van Dyke D       rgb(191, 113, 133)
+Van Dyke E       rgb( 68,  60,  94)
+Van Dyke F       rgb( 61,  43,  39)
+```
+
+### 3. Back in Black
+
+```text
+Back in Black A  rgb(240, 217, 228)
+Back in Black B  rgb(193, 160, 172)
+Back in Black C  rgb(193, 160, 172)
+Back in Black D  rgb(128, 108, 121)
+Back in Black E  rgb( 74,  63,  75)
+Back in Black F  rgb( 22,  19,  21)
+```
+
+### 4. Belle of the Ball
+
+```text
+Belle A          rgb(226, 203, 192)
+Belle B          rgb(206, 171, 150)
+Belle C          rgb(210, 135, 106)
+Belle D          rgb(229,  74,  57)
+Belle E          rgb(118, 118,  44)
+Belle F          rgb( 53,  77,   4)
+```
+
+### 5. Pine Tree
+
+```text
+Pine Tree A      rgb(238, 200, 111)
+Pine Tree B      rgb(222, 166,  32)
+Pine Tree C      rgb(222, 166,  32)
+Pine Tree D      rgb(177, 120, 133)
+Pine Tree E      rgb(167,  88,  26)
+Pine Tree F      rgb( 43,  47,  34)
+```
+
+### 6. Provence Blue
+
+```text
+Provence A       rgb(170, 188, 175)
+Provence B       rgb(137, 156, 154)
+Provence C       rgb(137, 156, 154)
+Provence D       rgb(110, 124, 139)
+Provence E       rgb( 82,  92, 121)
+Provence F       rgb( 53,  66,  94)
+```
+
+### 7. Fresco Blue
+
+```text
+Fresco A         rgb(166, 224, 244)
+Fresco B         rgb( 71, 169, 207)
+Fresco C         rgb( 71, 169, 207)
+Fresco D         rgb(  9, 121, 158)
+Fresco E         rgb(  4,  75, 102)
+Fresco F         rgb(  2,  31,  46)
+```
+
+### 8. Monet
+
+```text
+Monet A          rgb(247, 244, 213)
+Monet B          rgb(211, 150, 140)
+Monet C          rgb(211, 150, 140)
+Monet D          rgb(131, 153,  88)
+Monet E          rgb( 16,  86, 102)
+Monet F          rgb( 10,  51,  35)
+```
+
+### 9. Narcissus
+
+```text
+Narcissus A      rgb(221, 213, 200)
+Narcissus B      rgb(185, 149, 144)
+Narcissus C      rgb(185, 149, 144)
+Narcissus D      rgb(199, 149,  72)
+Narcissus E      rgb(190, 108,  26)
+Narcissus F      rgb(110,  60,  31)
+```
+
+### 10. Roman Empire
+
+```text
+Carrara Marble   rgb(236, 232, 225)
+Gloria Aurum     rgb(212, 175,  55)
+Laurel Viridis   rgb( 74, 110,  65)
+Legion Crimson   rgb(180,  30,  30)
+Senate Bordeaux  rgb(120,  20,  40)
+Tyrian Purple    rgb( 88,  28,  90)
+```
+
+### 11. Greece
+
+```text
+Parian Marble      rgb(245, 240, 228)
+Gloria Aurum       rgb(212, 175,  55)
+Athena's Olive     rgb( 98, 128,  48)
+Attic Terracotta   rgb(188,  82,  38)
+Agora Kyanos       rgb( 48, 105, 175)
+Dionysian Grape    rgb( 90,  42,  92)
+```
+
+### 12. Kanagawa
+
+```text
+Nami-shiro       rgb(237, 233, 222)
+Boten            rgb(208, 224, 238)
+Fuji-gasumi      rgb(150, 186, 210)
+Bero-ai          rgb( 26,  78, 132)
+Shinkai          rgb( 13,  38,  76)
+Sumi             rgb( 29,  25,  35)
+```
+
+### 13. Starry Night
+
+```text
+Lumière Lunaire     rgb(240, 208,  68)
+Lueurs du Village   rgb(198, 140,  52)
+Aube Glacée         rgb(105, 155, 200)
+Tourbillon Outremer rgb( 48,  96, 165)
+Cyprès Nocturne     rgb( 22,  50,  30)
+Minuit Cobalt       rgb( 20,  36,  88)
+```
+
+### 14. A Thousand Li
+
+```text
+Song Silk        rgb(218, 203, 170)
+Sky Azurite      rgb(110, 165, 195)
+Ochre-Gold       rgb(183, 118,  45)
+Pale Malachite   rgb( 96, 148, 110)
+Malachite True   rgb( 48, 105,  76)
+Azurite Deep     rgb( 35,  78, 112)
+```
+
+### 15. And Quiet Flows the Don
+
+```text
+Полынь            rgb(142, 120,  70)
+Степной Пепел     rgb(110, 108, 104)
+Донская Земля     rgb(118,  86,  52)
+Ржавое Железо     rgb(122,  66,  36)
+Мутный Дон        rgb( 52,  70,  90)
+Запёкшаяся Кровь  rgb( 88,  26,  24)
+```
+
+### 16. Cyberpunk Edgerunners
+
+```text
+Psycho Yellow    rgb(225, 255,   8)
+Flatline Green   rgb( 10, 238, 100)
+Neon Magenta     rgb(238,  18, 120)
+Edgerunner Red   rgb(205,  20,  35)
+Luna Blue        rgb( 15,  32,  98)
+Night City Void  rgb( 14,   8,  28)
+```
+
+### 17. The Grand Budapest Hotel
+
+```text
+Crème Vanille      rgb(247, 235, 215)
+Brume Alpine       rgb(168, 178, 196)
+Rose Méndl         rgb(237, 148, 158)
+Doré Antique       rgb(176, 136,  60)
+Violet Concierge   rgb(128,  88, 148)
+Bordeaux Vintage   rgb(143,  52,  65)
+```
+
+### 18. Renaissance Florence
+
+```text
+Avorio Fiorentino            rgb(238, 228, 208)
+Oro dell'Altare              rgb(190, 148,  52)
+Cotto Brunellesco            rgb(172,  84,  50)
+Verde Cipresso               rgb( 54,  80,  60)
+Oltremare di Lapislazzuli    rgb( 46,  70, 118)
+Noce Toscano                 rgb( 85,  54,  34)
+```
+
+### 19. Soviet Avant-Garde
+
+```text
+ГАЗЕТА   rgb(225, 218, 205)
+ПЛАКАТ   rgb(200, 150,  32)
+БЕТОН    rgb(118, 114, 108)
+ЧЕРТЁЖ   rgb( 50,  80, 138)
+КРАСНЫЙ  rgb(196,  28,  28)
+ЧЁРНЫЙ   rgb( 24,  20,  18)
+```
+
+### 20. Constantinople
+
+```text
+Λευκός · Fildişi   rgb(236, 225, 207)
+Χρυσός · Altın     rgb(195, 150,  42)
+Ώχρα · Toprak      rgb(170, 112,  50)
+Κυπαρίσσι · Selvi  rgb( 50,  76,  58)
+Πορφύρα · Mor      rgb(102,  32,  65)
+Βόσπορος · Boğaz   rgb( 30,  52,  88)
+```
+
+### 21. France
+
+```text
+Ivoire Champagne    rgb(232, 222, 205)
+Olive Dorée         rgb(142, 133,  58)
+Zinc Parisien       rgb(122, 126, 132)
+Lavande Provençale  rgb(143, 108, 148)
+Rouge Marianne      rgb(180,  32,  40)
+Bleu République     rgb( 44,  74, 138)
+```
+
+### 22. Kyoto
+
+```text
+Kinushiro      rgb(234, 226, 212)
+Sakura-nezumi  rgb(204, 184, 178)
+Aotake-nezumi  rgb(116, 126, 120)
+Karacha        rgb(110,  84,  64)
+Koke-iro       rgb( 80,  94,  68)
+Kon            rgb( 34,  40,  66)
+Shu-hi         rgb(170,  50,  36)   % spotcolor
+```
+
+### 23. Siamese Dream
+
+```text
+Luna           rgb(238, 226, 208)
+Disarm         rgb(182, 180, 193)
+Today          rgb(198, 158,  65)
+Hummer         rgb(150, 145, 135)
+Mayonaise      rgb(188, 105,  40)
+Soma           rgb( 42,  68,  48)
+```
+
+## Appendix: Full Palette Descriptions
+
+The appendix below is the full English counterpart to the long-form Chinese
+catalogue. Each palette is presented with the same four-part structure: a short
+color philosophy, a six-color set, the full swatch strip, and a brief design
+logic note explaining how the palette is meant to behave on the page.
+
+### Palette 0 — OUC Default
+
+#### Color Philosophy
+
+This is a deep academic blue system organized around scholarship, the sea, and
+structural order. It is not a display palette built for bravura; it is a
+palette built to hold information in place. Pale blue opens breathing room,
+bright blue handles guidance, navy carries authority, and the near-black harbor
+blue closes the system.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Mist Blue | `rgb(239,246,255)` | Almost-white blue for backgrounds and breathing room |
+| Soft Sky | `rgb(219,234,254)` | Secondary pale layer for light information blocks |
+| Signal Blue | `rgb(96,165,250)` | Guidance blue for prompts and light emphasis |
+| Structural Blue | `rgb(37,99,235)` | Mid-tone structural blue, crisp and modern |
+| Academic Navy | `rgb(30,58,138)` | Primary color, stable, rational, and academic |
+| Deep Harbor | `rgb(30,41,59)` | Deep anchor for the strongest contrast |
+
+#### Full Palette
+
+```text
+Mist Blue        rgb(239, 246, 255)
+Soft Sky         rgb(219, 234, 254)
+Signal Blue      rgb( 96, 165, 250)
+Structural Blue  rgb( 37,  99, 235)
+Academic Navy    rgb( 30,  58, 138)
+Deep Harbor      rgb( 30,  41,  59)
+```
+
+Design logic: the chain runs from nearly invisible pale blue to harbor-deep
+navy, giving the page a very explicit hierarchy. It is the most natural fit
+for academic prose, contents pages, chapter titles, and table heads.
+
+### Palette 1 — Brunneophobia
+
+#### Color Philosophy
+
+Brunneophobia is built from fired earth, old wood, leather, and the residual
+heat of a kiln. These are not cheerful browns but smoked browns, the colors of
+ceramic skins, worn tabletops, and cracked spines. It suits books that want
+weight without claustrophobia.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Clay Mist | `rgb(238,211,180)` | Pale clay foundation |
+| Ochre Sand | `rgb(213,148,79)` | Warm ochre-brown middle layer |
+| Ochre Sand | `rgb(213,148,79)` | Repeated slot for the five-color legacy mapping |
+| Kiln Orange | `rgb(180,69,15)` | Fired ochre-orange |
+| Walnut Brown | `rgb(86,67,53)` | Primary color, steady walnut brown |
+| Charred Earth | `rgb(42,23,14)` | Deep charred-soil anchor |
+
+#### Full Palette
+
+```text
+Clay Mist     rgb(238, 211, 180)
+Ochre Sand    rgb(213, 148,  79)
+Ochre Sand    rgb(213, 148,  79)
+Kiln Orange   rgb(180,  69,  15)
+Walnut Brown  rgb( 86,  67,  53)
+Charred Earth rgb( 42,  23,  14)
+```
+
+Design logic: pale clay and charred earth stretch the two extremes apart,
+while burnt ochre compresses the middle. The result is warm, steady, and
+restrained, especially suitable for literature, history, and old-object
+subjects.
+
+### Palette 2 — Van Dyke
+
+#### Color Philosophy
+
+Van Dyke moves between old canvas, dusty rose, and faded indigo. It avoids
+display contrast and instead leans on a powdery, low-voiced elegance. It works
+well when the page needs soft drama rather than overt force.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Dust Rose | `rgb(236,194,188)` | Pale grey-rose ground |
+| Faded Indigo | `rgb(169,159,191)` | Misty indigo-violet |
+| Faded Indigo | `rgb(169,159,191)` | Repeated slot |
+| Old Wine | `rgb(191,113,133)` | Faded wine-red middle tone |
+| Muted Indigo | `rgb(68,60,94)` | Primary color, low-saturation indigo |
+| Burnt Umber | `rgb(61,43,39)` | Dark brown-grey anchor |
+
+#### Full Palette
+
+```text
+Dust Rose      rgb(236, 194, 188)
+Faded Indigo   rgb(169, 159, 191)
+Faded Indigo   rgb(169, 159, 191)
+Old Wine       rgb(191, 113, 133)
+Muted Indigo   rgb( 68,  60,  94)
+Burnt Umber    rgb( 61,  43,  39)
+```
+
+Design logic: rose, violet, wine, and brown-grey form an old-oil-painting
+continuum. The emotional register is quiet and literary, more grounded than a
+typical purple-based palette.
+
+### Palette 3 — Back in Black
+
+#### Color Philosophy
+
+This is not black and white, but a near-monochrome system with the residual
+warmth of dusty mauve. It feels like backstage velvet, mirrored dressing-room
+light, and the last warmth left inside dark fabric. The palette stays tightly
+controlled without becoming inhuman.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Powder Haze | `rgb(240,217,228)` | Pale smoky pink |
+| Mauve Dust | `rgb(193,160,172)` | Dusty mauve middle layer |
+| Mauve Dust | `rgb(193,160,172)` | Repeated slot |
+| Velvet Gray | `rgb(128,108,121)` | Mauve-grey transition |
+| Charcoal Mauve | `rgb(74,63,75)` | Primary color, smoky charcoal violet |
+| Stage Black | `rgb(22,19,21)` | Deepest near-black |
+
+#### Full Palette
+
+```text
+Powder Haze    rgb(240, 217, 228)
+Mauve Dust     rgb(193, 160, 172)
+Mauve Dust     rgb(193, 160, 172)
+Velvet Gray    rgb(128, 108, 121)
+Charcoal Mauve rgb( 74,  63,  75)
+Stage Black    rgb( 22,  19,  21)
+```
+
+Design logic: the near-monochrome logic keeps the page from competing with
+the layout, while the dusty pink base stops it from feeling sterile. It works
+for quiet, refined, exhibition-like pages.
+
+### Palette 4 — Belle of the Ball
+
+#### Color Philosophy
+
+Belle of the Ball feels like a vintage ballroom where porcelain blush, coral
+light, and late olive-green meet under chandeliers. The palette carries a hint
+of theatrics, but its center of gravity stays in olive, which keeps the whole
+thing controlled rather than sugary.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Porcelain Blush | `rgb(226,203,192)` | Soft pink-beige ground |
+| Antique Peach | `rgb(206,171,150)` | Old peach middle tone |
+| Coral Clay | `rgb(210,135,106)` | Coral-clay bridge tone |
+| Ballroom Coral | `rgb(229,74,57)` | Bright coral accent |
+| Olive Court | `rgb(118,118,44)` | Primary color, courtly olive |
+| Moss Shadow | `rgb(53,77,4)` | Deep mossy anchor |
+
+#### Full Palette
+
+```text
+Porcelain Blush rgb(226, 203, 192)
+Antique Peach   rgb(206, 171, 150)
+Coral Clay      rgb(210, 135, 106)
+Ballroom Coral  rgb(229,  74,  57)
+Olive Court     rgb(118, 118,  44)
+Moss Shadow     rgb( 53,  77,   4)
+```
+
+Design logic: warm pale tones establish old-world light, coral delivers the
+momentary sparkle, and olive plus moss push the palette back into a controlled
+retro register.
+
+### Palette 5 — Pine Tree
+
+#### Color Philosophy
+
+Pine Tree is a distinctly autumnal palette. Gold, ochre-orange, pine shadow,
+and a muted berry transition turn the page into late woodland space: warm hues
+carry the remaining light; deep hues keep the hush of dried leaves and dark
+tree lines.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Autumn Gold | `rgb(238,200,111)` | Autumn gold foundation |
+| Harvest Ochre | `rgb(222,166,32)` | Harvest ochre |
+| Harvest Ochre | `rgb(222,166,32)` | Repeated slot |
+| Faded Berry | `rgb(177,120,133)` | Muted berry transition |
+| Burnt Orange | `rgb(167,88,26)` | Primary color, deep burnt orange |
+| Pine Shadow | `rgb(43,47,34)` | Dark pine-shadow anchor |
+
+#### Full Palette
+
+```text
+Autumn Gold   rgb(238, 200, 111)
+Harvest Ochre rgb(222, 166,  32)
+Harvest Ochre rgb(222, 166,  32)
+Faded Berry   rgb(177, 120, 133)
+Burnt Orange  rgb(167,  88,  26)
+Pine Shadow   rgb( 43,  47,  34)
+```
+
+Design logic: this is a classic palette of warm advance and dark-green
+closure. It works well for pages that want land, season, and a controlled
+narrative mood.
+
+### Palette 6 — Provence Blue
+
+#### Color Philosophy
+
+The beauty of Provence Blue lies in its refusal of postcard brightness. It is
+closer to mist over stone walls, herb pots on a sill, or evening over lavender
+fields than to a touristic Mediterranean blue. It is cool, muted, and easy to
+live with across many pages.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Herb Mist | `rgb(170,188,175)` | Herbal grey-green light layer |
+| Stone Green | `rgb(137,156,154)` | Stone-wall blue-green |
+| Stone Green | `rgb(137,156,154)` | Repeated slot |
+| Slate Air | `rgb(110,124,139)` | Slate-blue air tone |
+| Provence Slate | `rgb(82,92,121)` | Primary color, muted Provence blue |
+| Evening Indigo | `rgb(53,66,94)` | Deep evening indigo |
+
+#### Full Palette
+
+```text
+Herb Mist      rgb(170, 188, 175)
+Stone Green    rgb(137, 156, 154)
+Stone Green    rgb(137, 156, 154)
+Slate Air      rgb(110, 124, 139)
+Provence Slate rgb( 82,  92, 121)
+Evening Indigo rgb( 53,  66,  94)
+```
+
+Design logic: the palette stays cool without becoming hard. Because it has
+so much grey built into it, it performs well for body pages and contents pages
+that need endurance rather than spectacle.
+
+### Palette 7 — Fresco Blue
+
+#### Color Philosophy
+
+Fresco Blue borrows from weathered murals and sea air etched into mineral
+surfaces. Its highlights look thinned with lime and plaster; its darks feel as
+if pigment has seeped into the wall itself. The result is clean, historical,
+and beautifully legible.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Wash Blue | `rgb(166,224,244)` | Washed mural blue |
+| Fresh Cyan | `rgb(71,169,207)` | Sea-cyan middle layer |
+| Fresh Cyan | `rgb(71,169,207)` | Repeated slot |
+| Mineral Teal | `rgb(9,121,158)` | Mineral teal |
+| Fresco Teal | `rgb(4,75,102)` | Primary color, deep fresco teal |
+| Abyss Ink | `rgb(2,31,46)` | Deep marine ink anchor |
+
+#### Full Palette
+
+```text
+Wash Blue    rgb(166, 224, 244)
+Fresh Cyan   rgb( 71, 169, 207)
+Fresh Cyan   rgb( 71, 169, 207)
+Mineral Teal rgb(  9, 121, 158)
+Fresco Teal  rgb(  4,  75, 102)
+Abyss Ink    rgb(  2,  31,  46)
+```
+
+Design logic: one of the strongest modern-leaning base palettes in the set.
+Its depth ladder is extremely clear, and it feels crisper and more designed
+than the default OUC blue.
+
+### Palette 8 — Monet
+
+#### Color Philosophy
+
+Monet brings ivory, dusty coral, moss-green, and dark teal into the same
+atmosphere. It feels less like flowers and more like air inside an Impressionist
+painting: soft without being weak, open in the highlights, but still held up by
+real structure in the deep tones.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Ivory Light | `rgb(247,244,213)` | Pale ivory ground |
+| Dusty Coral | `rgb(211,150,140)` | Dust-softened coral |
+| Dusty Coral | `rgb(211,150,140)` | Repeated slot |
+| Field Green | `rgb(131,153,88)` | Field green |
+| Dark Teal | `rgb(16,86,102)` | Primary color, deep teal |
+| Forest Teal | `rgb(10,51,35)` | Forest-dark teal anchor |
+
+#### Full Palette
+
+```text
+Ivory Light  rgb(247, 244, 213)
+Dusty Coral  rgb(211, 150, 140)
+Dusty Coral  rgb(211, 150, 140)
+Field Green  rgb(131, 153,  88)
+Dark Teal    rgb( 16,  86, 102)
+Forest Teal  rgb( 10,  51,  35)
+```
+
+Design logic: the ivory and coral layers give the page immediate warmth,
+while dark teal and forest teal keep the hierarchy firm. It is especially good
+for narrative and art-adjacent documents.
+
+### Palette 9 — Narcissus
+
+#### Color Philosophy
+
+Narcissus is dry, warm, and particulate. Its pale tones feel like sand and old
+cloth; the middle moves through weathered ochre; the dark end compresses into
+rust and scorched cedar. It is especially convincing for historical, archival,
+or landscape-centered material.
+
+#### Six-Color Set
+
+| Color | RGB | Note |
+|---|---|---|
+| Sand Veil | `rgb(221,213,200)` | Pale sand ground |
+| Dust Rose | `rgb(185,149,144)` | Dusty rose |
+| Dust Rose | `rgb(185,149,144)` | Repeated slot |
+| Dry Ochre | `rgb(199,149,72)` | Dry ochre middle tone |
+| Rust Amber | `rgb(190,108,26)` | Primary color, rusty amber |
+| Burnt Cedar | `rgb(110,60,31)` | Deep scorched-wood anchor |
+
+#### Full Palette
+
+```text
+Sand Veil   rgb(221, 213, 200)
+Dust Rose   rgb(185, 149, 144)
+Dust Rose   rgb(185, 149, 144)
+Dry Ochre   rgb(199, 149,  72)
+Rust Amber  rgb(190, 108,  26)
+Burnt Cedar rgb(110,  60,  31)
+```
+
+Design logic: the palette has pronounced soil and rust in it, which makes
+it warm without sweetness and old without turning inert.
+
+### Palette 10 — Roman Empire
+
+#### Color Philosophy
+
+The Roman Empire palette has to hold stone, blood, power, ritual, and triumph
+at the same time. Carrara marble provides the architectural ground; legion red
+and senate wine-red divide military force from patrician authority; laurel
+green and ceremonial gold stabilize the scene; Tyrian purple, the final deep
+note, seals the whole palette with imperial distance.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Carrara Marble | `rgb(236,232,225)` | Cool marble white with a hint of warmth |
+| Gloria Aurum | `rgb(212,175,55)` | Triumphal gold, balanced between coin and icon |
+| Laurel Viridis | `rgb(74,110,65)` | Matte laurel green, steady rather than bright |
+| Legion Crimson | `rgb(180,30,30)` | Martial crimson, direct and saturated |
+| Senate Bordeaux | `rgb(120,20,40)` | Deep wine-red with patrician gravity |
+| Tyrian Purple | `rgb(88,28,90)` | The costly imperial purple of sovereignty |
+
+#### Full Palette
+
+```text
+Carrara Marble   rgb(236, 232, 225)
+Legion Crimson   rgb(180,  30,  30)
+Senate Bordeaux  rgb(120,  20,  40)
+Laurel Viridis   rgb( 74, 110,  65)
+Gloria Aurum     rgb(212, 175,  55)
+Tyrian Purple    rgb( 88,  28,  90)
+```
+
+Design logic: stone gives the civilization its base plane, the two reds split
+state power into two registers, green and gold establish triumphal order, and
+purple functions as the final sacred-dark anchor.
+
+### Palette 11 — Greece
+
+#### Color Philosophy
+
+The Greece palette begins with temple marble and lets civic blue lead the eye.
+Gold serves as a highlight, while terracotta, olive, and grape-purple restore
+the human, agricultural, and theatrical complexity of Greek civilization. This
+keeps it from collapsing into a mere tourist-blue-and-white cliché.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Parian Marble | `rgb(245,240,228)` | Warm ivory marble for temples and sculpture |
+| Gloria Aurum | `rgb(212,175,55)` | Shared ceremonial gold |
+| Athena's Olive | `rgb(98,128,48)` | Olive-green of Athena's tree |
+| Attic Terracotta | `rgb(188,82,38)` | Red-clay ceramic narrative tone |
+| Agora Kyanos | `rgb(48,105,175)` | Aegean-civic blue |
+| Dionysian Grape | `rgb(90,42,92)` | Deep dramatic purple |
+
+#### Full Palette
+
+```text
+Parian Marble      rgb(245, 240, 228)
+Agora Kyanos       rgb( 48, 105, 175)
+Gloria Aurum       rgb(212, 175,  55)
+Attic Terracotta   rgb(188,  82,  38)
+Dionysian Grape    rgb( 90,  42,  92)
+Athena's Olive     rgb( 98, 128,  48)
+```
+
+Design logic: marble holds the base, civic blue leads the composition, gold
+acts as a controlled flare, terracotta and olive mediate warm and cool, and the
+grape-purple sits at the deepest dramatic point.
+
+### Palette 12 — Kanagawa
+
+#### Color Philosophy
+
+Kanagawa takes its logic from Hokusai's revolution in blue. Prussian blue is
+the spine; washi warmth and foam-white are the air around it; sumi ink closes
+the composition. It is a palette of blue structure, white breath, and dark
+outline.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Nami-shiro | `rgb(237,233,222)` | Foam-white, warm like paper rather than pure white |
+| Boten | `rgb(208,224,238)` | Pale horizon sky |
+| Fuji-gasumi | `rgb(150,186,210)` | Distant Fuji haze |
+| Bero-ai | `rgb(26,78,132)` | Main Prussian-wave blue |
+| Shinkai | `rgb(13,38,76)` | Deep-sea blue, nearly black |
+| Sumi | `rgb(29,25,35)` | Printmaking ink-line anchor |
+
+#### Full Palette
+
+```text
+Bero-ai      rgb( 26,  78, 132)
+Shinkai      rgb( 13,  38,  76)
+Fuji-gasumi  rgb(150, 186, 210)
+Boten        rgb(208, 224, 238)
+Nami-shiro   rgb(237, 233, 222)
+Sumi         rgb( 29,  25,  35)
+```
+
+Design logic: the palette forms a continuous rise from ink-dark sea depth to
+foam-white spray. That single-hue modulation is exactly what gives it its Edo
+woodblock authority.
+
+### Palette 13 — Starry Night
+
+#### Color Philosophy
+
+Starry Night is organized by three tiers of blue and the violent intrusion of
+yellow light. The cypress is the dark vegetal flame that pulls the cosmic swirl
+back toward the earth, while the village amber is the only remnant of human
+warmth in the scene.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Lumière Lunaire | `rgb(240,208,68)` | Moon and starburst yellow |
+| Lueurs du Village | `rgb(198,140,52)` | Village-window amber |
+| Aube Glacée | `rgb(105,155,200)` | Pale blue transition |
+| Tourbillon Outremer | `rgb(48,96,165)` | Ultramarine vortex blue |
+| Cyprès Nocturne | `rgb(22,50,30)` | Cypress-dark green |
+| Minuit Cobalt | `rgb(20,36,88)` | Deep midnight cobalt |
+
+#### Full Palette
+
+```text
+Minuit Cobalt       rgb( 20,  36,  88)
+Tourbillon Outremer rgb( 48,  96, 165)
+Aube Glacée         rgb(105, 155, 200)
+Lumière Lunaire     rgb(240, 208,  68)
+Cyprès Nocturne     rgb( 22,  50,  30)
+Lueurs du Village   rgb(198, 140,  52)
+```
+
+Design logic: the three blues establish emotional depth, moon-yellow and
+village amber serve as the only two warm notes, and the cypress keeps the whole
+sky from floating away into pure spectacle.
+
+### Palette 14 — A Thousand Li
+
+#### Color Philosophy
+
+This palette draws from the mineral layering of traditional blue-green Chinese
+landscape painting. Azurite and malachite are not blunt blocks here; they are
+sedimented into silk. Ochre-gold acts as a temperature regulator, while the old
+silk ground gives the entire system historical thickness.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Song Silk | `rgb(218,203,170)` | Warm aged-silk foundation |
+| Sky Azurite | `rgb(110,165,195)` | Pale azurite for water and distance |
+| Ochre-Gold | `rgb(183,118,45)` | Warm human and architectural note |
+| Pale Malachite | `rgb(96,148,110)` | Transitional green mist |
+| Malachite True | `rgb(48,105,76)` | Full malachite mountain green |
+| Azurite Deep | `rgb(35,78,112)` | Deep azurite structural blue |
+
+#### Full Palette
+
+```text
+Azurite Deep    rgb( 35,  78, 112)
+Malachite True  rgb( 48, 105,  76)
+Sky Azurite     rgb(110, 165, 195)
+Pale Malachite  rgb( 96, 148, 110)
+Ochre-Gold      rgb(183, 118,  45)
+Song Silk       rgb(218, 203, 170)
+```
+
+Design logic: deep azurite and malachite provide the primary blue-green axis,
+lighter azurite and malachite create graded atmospheric depth, ochre-gold adds
+temperature, and aged silk keeps the whole palette grounded in time.
+
+### Palette 15 — And Quiet Flows the Don
+
+#### Color Philosophy
+
+This palette rejects brightness altogether. Its blue is muddy, its red is dried
+blood, its yellow is dead reed, and its grey is not abstract neutrality but
+frozen dust and exhausted steppe air. It is designed to hold historical weight
+without melodrama.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Полынь | `rgb(142,120,70)` | Wormwood-yellow reed tone |
+| Степной Пепел | `rgb(110,108,104)` | Lead-grey of winter steppe |
+| Донская Земля | `rgb(118,86,52)` | Don-soil brown |
+| Ржавое Железо | `rgb(122,66,36)` | Rusted-iron ochre-red |
+| Мутный Дон | `rgb(52,70,90)` | Muddy river blue |
+| Запёкшаяся Кровь | `rgb(88,26,24)` | Dried-blood dark red |
+
+#### Full Palette
+
+```text
+Мутный Дон        rgb( 52,  70,  90)
+Степной Пепел     rgb(110, 108, 104)
+Донская Земля     rgb(118,  86,  52)
+Полынь            rgb(142, 120,  70)
+Ржавое Железо     rgb(122,  66,  36)
+Запёкшаяся Кровь  rgb( 88,  26,  24)
+```
+
+Design logic: cold grey presses from above, earth-brown bears the weight,
+dark blood anchors the bottom, and rust ties time into the whole system. There
+is no hope color here, only gradations of attrition.
+
+### Palette 16 — Cyberpunk Edgerunners
+
+#### Color Philosophy
+
+Cyberpunk Edgerunners is built on overload. There is no middle cushioning layer
+between the void-dark base and the fluorescent highs. Lucy's blue is the only
+credible line of escape; yellow and green signal machinery, illness, and loss
+of control; red is the price paid by the body.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Psycho Yellow | `rgb(225,255,8)` | Critical-overload yellow |
+| Flatline Green | `rgb(10,238,100)` | Hacking and machinery green |
+| Neon Magenta | `rgb(238,18,120)` | Signboard and pleasure-district magenta |
+| Edgerunner Red | `rgb(205,20,35)` | Blood-cost red |
+| Luna Blue | `rgb(15,32,98)` | Lucy, moon, and escape blue |
+| Night City Void | `rgb(14,8,28)` | The deep violet-black substrate |
+
+#### Full Palette
+
+```text
+Night City Void   rgb( 14,   8,  28)
+Luna Blue         rgb( 15,  32,  98)
+Edgerunner Red    rgb(205,  20,  35)
+Neon Magenta      rgb(238,  18, 120)
+Flatline Green    rgb( 10, 238, 100)
+Psycho Yellow     rgb(225, 255,   8)
+```
+
+Design logic: void-dark sets the container, blue supplies the dream line,
+red marks the bodily toll, and the fluorescent top end supplies the overclocked
+surface noise that makes Night City feel terminally awake.
+
+### Palette 17 — The Grand Budapest Hotel
+
+#### Color Philosophy
+
+This palette is wrapped in old-European fairy-tale light. Its pink is not
+girlish pink but aged rose; its purple is etiquette, personality, and rank.
+Vanilla cream, dim gold, and mist-blue keep the whole system bright without
+turning saccharine.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Crème Vanille | `rgb(247,235,215)` | Warm vanilla-cream ground |
+| Brume Alpine | `rgb(168,178,196)` | Cool mist-blue regulator |
+| Rose Méndl | `rgb(237,148,158)` | Signature old-rose facade tone |
+| Doré Antique | `rgb(176,136,60)` | Antique dim gold |
+| Violet Concierge | `rgb(128,88,148)` | Formal concierge purple |
+| Bordeaux Vintage | `rgb(143,52,65)` | Vintage burgundy shadow |
+
+#### Full Palette
+
+```text
+Rose Méndl        rgb(237, 148, 158)
+Violet Concierge  rgb(128,  88, 148)
+Crème Vanille     rgb(247, 235, 215)
+Doré Antique      rgb(176, 136,  60)
+Brume Alpine      rgb(168, 178, 196)
+Bordeaux Vintage  rgb(143,  52,  65)
+```
+
+Design logic: rose and purple carry the central fairy-tale image, cream
+provides the atmosphere, gold adds aristocratic weight, mist-blue cools the
+page down, and burgundy stops the palette from collapsing into pastry-box
+sweetness.
+
+### Palette 18 — Renaissance Florence
+
+#### Color Philosophy
+
+Florentine color is not invented so much as extracted from materials: lapis,
+gold leaf, baked clay, walnut, cypress, ivory gesso. The palette therefore
+feels naturally ordered rather than merely styled, balancing sacred blue and
+gold with earthly terracotta and wood.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Avorio Fiorentino | `rgb(238,228,208)` | Florentine ivory ground |
+| Oro dell'Altare | `rgb(190,148,52)` | Old altar gold |
+| Cotto Brunellesco | `rgb(172,84,50)` | Brunelleschi terracotta |
+| Verde Cipresso | `rgb(54,80,60)` | Deep cypress green |
+| Oltremare di Lapislazzuli | `rgb(46,70,118)` | Lapis ultramarine blue |
+| Noce Toscano | `rgb(85,54,34)` | Tuscan walnut brown |
+
+#### Full Palette
+
+```text
+Avorio Fiorentino        rgb(238, 228, 208)
+Oro dell'Altare          rgb(190, 148,  52)
+Cotto Brunellesco        rgb(172,  84,  50)
+Oltremare di Lapislazzuli rgb( 46,  70, 118)
+Verde Cipresso           rgb( 54,  80,  60)
+Noce Toscano             rgb( 85,  54,  34)
+```
+
+Design logic: lapis and altar gold establish the sacred register, ivory and
+terracotta soften it into lived human craft, while cypress and walnut pull the
+palette back toward earth and handwork.
+
+### Palette 19 — Soviet Avant-Garde
+
+#### Color Philosophy
+
+Soviet Avant-Garde rejects harmony, gradient, and ornament. Each color behaves
+like a hard-edged declaration: red acts, black negates, grey bears industrial
+weight, blue thinks in diagrams, ochre promises the future in propaganda tones,
+and newsprint white keeps the whole thing rough and public.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| ГАЗЕТА | `rgb(225,218,205)` | Newsprint white, rough and democratic |
+| ПЛАКАТ | `rgb(200,150,32)` | Poster-ochre promise |
+| БЕТОН | `rgb(118,114,108)` | Concrete industrial grey |
+| ЧЕРТЁЖ | `rgb(50,80,138)` | Blueprint-mechanical blue |
+| КРАСНЫЙ | `rgb(196,28,28)` | Constructivist revolutionary red |
+| ЧЁРНЫЙ | `rgb(24,20,18)` | Absolute iron-black |
+
+#### Full Palette
+
+```text
+КРАСНЫЙ  rgb(196,  28,  28)
+ЧЁРНЫЙ   rgb( 24,  20,  18)
+БЕТОН    rgb(118, 114, 108)
+ЧЕРТЁЖ   rgb( 50,  80, 138)
+ГАЗЕТА   rgb(225, 218, 205)
+ПЛАКАТ   rgb(200, 150,  32)
+```
+
+Design logic: the red-black collision is the core grammar, industrial grey
+forms the spine, blueprint blue adds cold reason, newsprint white recalls mass
+circulation, and ochre lowers utopian promise into the rust of history.
+
+### Palette 20 — Constantinople
+
+#### Color Philosophy
+
+Constantinople has to belong to Greece and Rome, Byzantium, Islam, Christianity,
+and the Ottoman city at once. Gold, blue, purple, ochre, ivory, and cypress
+green are therefore not decorative extras but the material afterimage of a city
+where multiple civilizations keep pressing through the same stone.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Λευκός · Fildişi | `rgb(236,225,207)` | Warm ivory marble base |
+| Χρυσός · Altın | `rgb(195,150,42)` | Old Hagia-Sophia gold |
+| Ώχρα · Toprak | `rgb(170,112,50)` | City-wall ochre earth |
+| Κυπαρίσσι · Selvi | `rgb(50,76,58)` | Cypress-dark green |
+| Πορφύρα · Mor | `rgb(102,32,65)` | Imperial porphyry purple |
+| Βόσπορος · Boğaz | `rgb(30,52,88)` | Evening Bosphorus blue |
+
+#### Full Palette
+
+```text
+Χρυσός · Altın       rgb(195, 150,  42)
+Βόσπορος · Boğaz     rgb( 30,  52,  88)
+Πορφύρα · Mor        rgb(102,  32,  65)
+Ώχρα · Toprak        rgb(170, 112,  50)
+Λευκός · Fildişi     rgb(236, 225, 207)
+Κυπαρίσσι · Selvi    rgb( 50,  76,  58)
+```
+
+Design logic: deep blue and ochre create the east-west temperature axis,
+gold-purple-ivory form the sacred triangle, and cypress green supplies the long
+historical shadow that keeps the palette from becoming merely luxurious.
+
+### Palette 21 — France
+
+#### Color Philosophy
+
+France should not read as literal flag colors. Its red needs the weight of wine
+and blood, its white is really champagne ivory, and its blue has to carry the
+gravity of Enlightenment reason. Lavender, olive-gold, and Parisian zinc bring
+in the fractures between republic, province, aristocratic memory, and modern
+city.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Ivoire Champagne | `rgb(232,222,205)` | Champagne ivory rather than pure white |
+| Olive Dorée | `rgb(142,133,58)` | Versailles olive-gold |
+| Zinc Parisien | `rgb(122,126,132)` | Paris rooftop zinc grey |
+| Lavande Provençale | `rgb(143,108,148)` | Southern lavender purple |
+| Rouge Marianne | `rgb(180,32,40)` | Republic red with tannic depth |
+| Bleu République | `rgb(44,74,138)` | Republic blue of reason and state |
+
+#### Full Palette
+
+```text
+Rouge Marianne      rgb(180,  32,  40)
+Bleu République     rgb( 44,  74, 138)
+Ivoire Champagne    rgb(232, 222, 205)
+Lavande Provençale  rgb(143, 108, 148)
+Olive Dorée         rgb(142, 133,  58)
+Zinc Parisien       rgb(122, 126, 132)
+```
+
+Design logic: the tricolor is reinterpreted as cultural matter instead of a
+flat political emblem; lavender and zinc open a north-south fracture, while
+olive-gold and deep blue quietly stage the old tension between monarchy and
+republic.
+
+### Palette 22 — Kyoto
+
+#### Color Philosophy
+
+Kyoto never announces itself. Warm silk-white, sakura-grey, bamboo-grey,
+weathered tea-brown, moss green, and dark indigo form the six-color base of a
+city built on restraint, mist, and aftertone. Vermilion is allowed to appear,
+but only in miniature, like the only warm living thing in an otherwise hushed
+tea room.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Kinushiro | `rgb(234,226,212)` | Silk-paper warm white |
+| Sakura-nezumi | `rgb(204,184,178)` | Fallen-blossom grey pink |
+| Aotake-nezumi | `rgb(116,126,120)` | Misty bamboo grey |
+| Karacha | `rgb(110,84,64)` | Weathered tea-brown wood tone |
+| Koke-iro | `rgb(80,94,68)` | Moss-dark green |
+| Kon | `rgb(34,40,66)` | Noh-night indigo |
+
+#### Spot Color
+
+| Name | RGB | Note |
+|---|---|---|
+| Shu-hi | `rgb(170,50,36)` | Vermilion used only as a small decisive accent |
+
+#### Full Palette
+
+```text
+Kinushiro      rgb(234, 226, 212)
+Karacha        rgb(110,  84,  64)
+Sakura-nezumi  rgb(204, 184, 178)
+Aotake-nezumi  rgb(116, 126, 120)
+Koke-iro       rgb( 80,  94,  68)
+Kon            rgb( 34,  40,  66)
+-------------------------------------------
+Shu-hi         rgb(170,  50,  36)  spotcolor
+```
+
+Design logic: silence and negative space are the skeleton, bamboo-grey and
+tea-brown hold the temperature in balance, all six base tones refuse brightness,
+and the vermilion only works because it is not allowed to become a field color.
+
+### Palette 23 — Siamese Dream
+
+#### Color Philosophy
+
+Siamese Dream is a study in adolescent contradiction: overexposed light, soft
+focus, low-temperature orange, and organic dark green. Its most beautiful tones
+are also the least trustworthy. The palette never erupts; it seeps, like a wall
+of distorted guitars carrying feelings that were never allowed to speak plainly.
+
+#### Six-Color Set
+
+| Name | RGB | Note |
+|---|---|---|
+| Luna | `rgb(238,226,208)` | Overexposed warm white afterglow |
+| Disarm | `rgb(182,180,193)` | Vulnerable grey-violet |
+| Today | `rgb(198,158,65)` | Beautiful but suspect faded gold |
+| Hummer | `rgb(150,145,135)` | Floating shoegaze smoke-grey |
+| Mayonaise | `rgb(188,105,40)` | Low-temperature emotional orange |
+| Soma | `rgb(42,68,48)` | Organic black-substitute dark green |
+
+#### Full Palette
+
+```text
+Luna       rgb(238, 226, 208)
+Disarm     rgb(182, 180, 193)
+Today      rgb(198, 158,  65)
+Hummer     rgb(150, 145, 135)
+Mayonaise  rgb(188, 105,  40)
+Soma       rgb( 42,  68,  48)
+```
+
+Design logic: Luna and Hummer create the overexposed haze layer, Today and
+Disarm supply the emotional contradiction, Mayonaise acts as a slow-burn core
+rather than a flame, and Soma stands in for black while remaining stubbornly
+alive.
 
 ---
 
@@ -304,6 +1438,8 @@ This template builds on several open-source projects:
   <https://mattiapuddu25.github.io/index.html>
 
 ---
+
+<a id="zh"></a>
 
 # 中文版 / Chinese Version
 
@@ -809,6 +1945,8 @@ Soma           rgb( 42,  68,  48)
 ```
 
 ---
+
+<a id="zh-appendix"></a>
 
 ## 附录：全部配色方案详述
 
